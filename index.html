@@ -1,389 +1,549 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAMPUSFORCES - Under Maintenance</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CampusForces — Compete. Grow. Get Hired.</title>
+<style>
+:root{
+  --green:#1D9E75;--green-light:#5DCAA5;--green-bg:rgba(29,158,117,0.12);
+  --red:#E24B4A;--red-bg:rgba(226,75,74,0.13);--blue:#378ADD;
+  --bg:#08080f;--bg2:#0f0f1a;--bg3:#13131e;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --t1:#ffffff;--t2:rgba(255,255,255,0.55);--t3:rgba(255,255,255,0.28);--t4:rgba(255,255,255,0.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* NAVBAR */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(8,8,15,0.82);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border);transition:background .3s}
+.logo{font-size:20px;font-weight:800;letter-spacing:-.04em;text-decoration:none;color:var(--t1)}
+.logo span{color:var(--green-light)}
+.nav-links{display:flex;gap:32px}
+.nav-links a{font-size:13px;color:var(--t2);text-decoration:none;transition:color .2s;cursor:pointer}
+.nav-links a:hover{color:var(--t1)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.btn-nav-ghost{padding:8px 20px;background:transparent;color:var(--t2);border:0.5px solid var(--border2);border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-nav-ghost:hover{color:var(--t1);border-color:rgba(255,255,255,0.3)}
+.btn-nav-primary{padding:8px 20px;background:var(--green-light);color:#04342C;border:none;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s}
+.btn-nav-primary:hover{opacity:.88;transform:translateY(-1px)}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0033 50%, #000000 100%);
-            color: #ffffff;
-            min-height: 100vh;
-            overflow-y: auto;           /* Changed this */
-            position: relative;
-        }
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 200px;gap:24px;position:relative}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;border:0.5px solid rgba(93,202,165,0.3);background:rgba(93,202,165,0.08);font-size:11px;color:var(--green-light);letter-spacing:.08em;text-transform:uppercase}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green-light);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+#hero h1{font-size:clamp(40px,7vw,76px);font-weight:800;letter-spacing:-.04em;line-height:1.04;max-width:720px}
+#hero h1 em{font-style:normal;color:var(--t3)}
+.hero-sub{font-size:17px;color:var(--t2);max-width:480px;line-height:1.8}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.btn-primary{padding:15px 36px;background:var(--green-light);color:#04342C;border-radius:999px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:opacity .2s,transform .15s}
+.btn-primary:hover{opacity:.88;transform:translateY(-2px)}
+.btn-ghost{padding:15px 36px;background:transparent;color:var(--t2);border-radius:999px;font-size:15px;font-weight:500;border:0.5px solid var(--border2);cursor:pointer;transition:all .2s}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:var(--t1);transform:translateY(-2px)}
+.hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--t4);font-size:11px;letter-spacing:.08em;text-transform:uppercase;animation:bounce 2.5s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
 
-        /* Floating Particles - Improved */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-            pointer-events: none;
-        }
+/* MARQUEE */
+.marquee-wrap{border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);padding:16px 0;overflow:hidden;white-space:nowrap;background:var(--bg2)}
+.marquee-track{display:inline-flex;gap:48px;animation:marquee 24s linear infinite}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.marquee-item{font-size:13px;color:var(--t3)}
+.marquee-item b{color:var(--green-light);font-weight:700}
 
-        .particle {
-            position: absolute;
-            background: rgba(138, 43, 226, 0.75);
-            border-radius: 50%;
-            box-shadow: 0 0 18px #8a2be2;
-            animation: floatParticle linear infinite;
-        }
+/* STATS */
+#stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:0.5px solid var(--border)}
+.stat-cell{padding:40px 52px;border-right:0.5px solid var(--border);display:flex;flex-direction:column;gap:6px}
+.stat-cell:last-child{border-right:none}
+.stat-lbl{font-size:10px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase}
+.stat-val{font-size:44px;font-weight:800;color:var(--t1);letter-spacing:-.04em;line-height:1}
+.stat-val span{color:var(--green-light)}
+.stat-sub{font-size:13px;color:var(--t3);margin-top:2px}
 
-        @keyframes floatParticle {
-            0% {
-                transform: translateY(100vh) scale(0.6);
-                opacity: 0.4;
-            }
-            100% {
-                transform: translateY(-150px) scale(1.3);
-                opacity: 0;
-            }
-        }
+/* SECTIONS */
+.section{padding:80px 52px;border-top:0.5px solid var(--border)}
+.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.sec-lbl{font-size:10px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase}
+.sec-link{font-size:13px;color:var(--t3);cursor:pointer;transition:color .2s}
+.sec-link:hover{color:var(--green-light)}
 
-        .container {
-            position: relative;
-            z-index: 10;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px 20px;
-        }
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{border-radius:16px;border:0.5px solid var(--border);overflow:hidden;cursor:pointer;transition:border-color .25s,transform .2s;background:var(--bg2)}
+.card:hover{border-color:rgba(93,202,165,.3);transform:translateY(-3px)}
+.card-thumb{height:130px;display:flex;align-items:center;justify-content:center;position:relative}
+.ct1{background:#040f09}.ct2{background:#09090f}.ct3{background:#0f0a04}
+.card-icon{font-size:42px;opacity:.08}
+.card-chip{position:absolute;top:12px;right:12px;padding:4px 12px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em}
+.chip-live{background:rgba(29,158,117,.18);color:var(--green-light);border:0.5px solid rgba(93,202,165,.35)}
+.chip-open{background:rgba(55,138,221,.15);color:#85B7EB;border:0.5px solid rgba(55,138,221,.3)}
+.chip-on{background:rgba(239,159,39,.15);color:#EF9F27;border:0.5px solid rgba(239,159,39,.3)}
+.card-body{padding:18px 20px 20px}
+.card-title{font-size:15px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:5px}
+.card-meta{font-size:11px;color:var(--t3);margin-bottom:16px}
+.card-foot{display:flex;justify-content:space-between;align-items:center}
+.card-pts{font-size:12px;color:var(--t3)}
+.btn-reg{padding:7px 16px;background:rgba(255,255,255,.05);color:var(--t2);border-radius:999px;font-size:12px;font-weight:600;border:0.5px solid var(--border);cursor:pointer;transition:all .2s}
+.btn-reg:hover{background:rgba(93,202,165,.12);color:var(--green-light);border-color:rgba(93,202,165,.35)}
+.btn-reg.done{background:rgba(29,158,117,.15);color:var(--green-light);border-color:rgba(93,202,165,.35);cursor:default}
 
-        .logo {
-            width: 130px;
-            height: 130px;
-            background: linear-gradient(45deg, #8a2be2, #ff00ff, #00ffff);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 52px;
-            font-weight: 900;
-            font-family: 'Space Grotesk', sans-serif;
-            margin-bottom: 25px;
-            box-shadow: 0 0 70px rgba(138, 43, 226, 0.9),
-                        inset 0 0 40px rgba(255,255,255,0.4);
-            animation: logoPulse 4s ease-in-out infinite;
-            border: 6px solid rgba(255,255,255,0.25);
-        }
+/* FEATURES */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.feat-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:12px}
+.feat-icon{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:0.5px solid var(--border);border-radius:10px;font-size:18px;color:var(--green-light)}
+.feat-title{font-size:15px;font-weight:700;color:rgba(255,255,255,.85)}
+.feat-desc{font-size:13px;color:var(--t3);line-height:1.75}
 
-        @keyframes logoPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
+/* LEADERBOARD */
+.lb-wrap{border:0.5px solid var(--border);border-radius:16px;overflow:hidden}
+.lb-table{width:100%;border-collapse:collapse;font-size:13px}
+.lb-table th{text-align:left;padding:12px 20px;font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;border-bottom:0.5px solid var(--border);background:var(--bg3)}
+.lb-table td{padding:15px 20px;border-bottom:0.5px solid rgba(255,255,255,.04);color:var(--t2)}
+.lb-table tr:last-child td{border-bottom:none}
+.lb-table tbody tr{cursor:pointer;transition:background .15s}
+.lb-table tbody tr:hover td{background:rgba(255,255,255,.025)}
+.rank{font-size:13px;font-weight:700;color:var(--t3);width:40px}
+.r1{color:#EF9F27}.r2{color:#B4B2A9}.r3{color:#D85A30}
+.uname{font-weight:700;color:rgba(255,255,255,.88)}
+.ucollege{font-size:11px;color:var(--t3);display:block;margin-top:2px}
+.lb-score{font-weight:700;color:var(--green-light);text-align:right}
+.lb-solved{text-align:right;color:var(--t3)}
+.chg-up{color:#5DCAA5;font-size:12px;font-weight:600}
+.chg-dn{color:#f07070;font-size:12px;font-weight:600}
+.chg-eq{color:var(--t4);font-size:12px}
 
-        h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 4.8rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, #fff, #c084fc, #67e8f9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-            letter-spacing: -3px;
-        }
+/* VISITOR BAR */
+#vBar{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:600;display:none;align-items:center;background:#0d0d18;border:0.5px solid rgba(255,255,255,.13);border-radius:999px;padding:7px;gap:0;white-space:nowrap;box-shadow:0 8px 40px rgba(0,0,0,.7)}
+.vb-sep{width:.5px;height:26px;background:rgba(255,255,255,.07);flex-shrink:0}
+.vb-pill{display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:999px;font-size:13px;font-weight:700;flex-shrink:0;transition:background .4s,color .4s}
+.vb-pill.online{background:rgba(29,158,117,.15);color:var(--green-light)}
+.vb-pill.offline{background:var(--red-bg);color:#f07070}
+.vb-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:background .4s}
+.vb-dot.on{background:var(--green);animation:bon 2s infinite}
+.vb-dot.off{background:var(--red);animation:boff 1.3s infinite}
+@keyframes bon{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes boff{0%,100%{opacity:1}50%{opacity:.35}}
+.vb-stat{display:flex;flex-direction:column;align-items:center;padding:2px 18px;flex-shrink:0}
+.vb-lbl{font-size:9px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
+.vb-num{font-size:16px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;line-height:1.1}
+.vb-clock{display:flex;flex-direction:column;align-items:center;padding:2px 18px;flex-shrink:0}
+.vb-time{font-size:16px;font-weight:500;color:rgba(255,255,255,.88);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.vb-tz{font-size:9px;color:var(--t3);letter-spacing:.07em;margin-top:1px}
+.vb-ping{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.04);font-size:12px;color:var(--t3);flex-shrink:0}
+.ping-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:pulse 3s infinite}
 
-        .tagline {
-            font-size: 1.55rem;
-            color: #c4b5fd;
-            margin-bottom: 50px;
-            font-weight: 500;
-        }
+/* COOKIE MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .35s;pointer-events:none}
+.modal-bg.show{opacity:1;pointer-events:all}
+.consent-box{background:#13131e;border:0.5px solid rgba(255,255,255,.12);border-radius:24px;max-width:440px;width:90%;padding:40px;transform:translateY(20px);transition:transform .35s}
+.modal-bg.show .consent-box{transform:translateY(0)}
+.consent-logo{font-size:17px;font-weight:800;color:var(--t1);letter-spacing:-.03em;margin-bottom:20px}
+.consent-logo span{color:var(--green-light)}
+.consent-box h3{font-size:20px;font-weight:700;color:var(--t1);margin-bottom:10px}
+.consent-box p{font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:28px}
+.consent-btns{display:flex;gap:10px}
+.btn-reject{flex:1;padding:13px;background:transparent;color:var(--t2);border:0.5px solid var(--border2);border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-reject:hover{border-color:rgba(255,255,255,.3);color:var(--t1)}
+.btn-accept-c{flex:1;padding:13px;background:var(--green-light);color:#04342C;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s}
+.btn-accept-c:hover{opacity:.88}
 
-        .maintenance-box {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(138, 43, 226, 0.5);
-            border-radius: 28px;
-            padding: 55px 65px;
-            max-width: 620px;
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
-        }
+/* TOAST */
+#toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%) translateY(12px);background:#1c1c2c;border:0.5px solid rgba(255,255,255,.1);border-radius:999px;padding:10px 22px;font-size:13px;color:var(--t2);opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;z-index:700}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-        .status {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(234, 179, 8, 0.15);
-            color: #facc15;
-            padding: 12px 32px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.15rem;
-            margin-bottom: 35px;
-            border: 1px solid rgba(234, 179, 8, 0.4);
-        }
+/* FOOTER */
+footer{padding:40px 52px 110px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-logo{font-size:18px;font-weight:800;color:var(--t3);letter-spacing:-.04em}
+.footer-logo span{color:var(--green-light)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:12px;color:var(--t3);text-decoration:none;transition:color .2s;cursor:pointer}
+.footer-links a:hover{color:var(--t2)}
+.footer-copy{font-size:12px;color:var(--t4)}
 
-        .status-dot {
-            width: 13px;
-            height: 13px;
-            background: #facc15;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        h2 {
-            font-size: 2.5rem;
-            margin-bottom: 18px;
-            color: #e0e7ff;
-        }
-
-        p {
-            color: #a5b4fc;
-            font-size: 1.22rem;
-            line-height: 1.7;
-            max-width: 520px;
-            margin: 0 auto 40px;
-        }
-
-        .coming-soon {
-            font-size: 1.4rem;
-            color: #67e8f9;
-            font-weight: 600;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            margin-bottom: 35px;
-        }
-
-        .progress-bar {
-            height: 9px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50px;
-            overflow: hidden;
-            margin-bottom: 12px;
-        }
-
-        .progress {
-            height: 100%;
-            width: 75%;
-            background: linear-gradient(90deg, #8a2be2, #22d3ee);
-            border-radius: 50px;
-            animation: progressAnim 5s ease-in-out infinite;
-        }
-
-        @keyframes progressAnim {
-            0%, 100% { width: 72%; }
-            50% { width: 80%; }
-        }
-
-        .percentage {
-            margin-bottom: 40px;
-            font-size: 1.1rem;
-            color: #c4b5fd;
-        }
-
-        .btn {
-            padding: 16px 40px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.15rem;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            border: none;
-            background: linear-gradient(45deg, #8a2be2, #c026d3);
-            color: white;
-            box-shadow: 0 12px 35px rgba(138, 43, 226, 0.5);
-        }
-
-        .btn:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 45px rgba(138, 43, 226, 0.7);
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: #1f1238;
-            padding: 40px 50px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 420px;
-            text-align: center;
-            border: 2px solid #8a2be2;
-        }
-
-        .modal-content input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            border: none;
-            background: #2a1b4a;
-            color: white;
-            font-size: 1.1rem;
-            margin: 20px 0;
-        }
-
-        .modal-content button {
-            width: 100%;
-            padding: 14px;
-            background: #8a2be2;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 25px;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #aaa;
-        }
-
-        .footer {
-            margin-top: 60px;
-            color: #64748b;
-            font-size: 0.95rem;
-        }
-    </style>
+@media(max-width:900px){
+  #navbar{padding:0 20px}.nav-links{display:none}
+  #stats{grid-template-columns:1fr}.stat-cell{border-right:none;border-bottom:0.5px solid var(--border);padding:28px 24px}
+  .cards-grid,.feat-grid{grid-template-columns:1fr}
+  .section{padding:48px 24px}
+  footer{padding:32px 24px 110px;flex-direction:column}
+  #vBar{left:12px;right:12px;transform:none;justify-content:center;bottom:14px}
+}
+</style>
 </head>
 <body>
 
-    <div class="particles" id="particles"></div>
+<!-- ✅ YOUR STATUS — change "online" to "offline" when away -->
+<script>var OWNER_STATUS='online';</script>
 
-    <div class="container">
-
-        <h1>CAMPUSFORCES</h1>
-        <p class="tagline">Where Campus Talent Meets Opportunities</p>
-
-        <div class="maintenance-box">
-            <div class="status">
-                <span class="status-dot"></span>
-                UNDER MAINTENANCE
-            </div>
-            
-            <h2>We'll Be Back Soon!</h2>
-            <p>
-                We're working hard to bring you an even better CampusForces experience. 
-                Stay tuned for something amazing!
-            </p>
-
-            <div class="coming-soon">RETURNING SOON • 2026</div>
-
-            <div class="progress-bar">
-                <div class="progress"></div>
-            </div>
-            <div class="percentage">75% Complete • Almost Ready</div>
-
-            <button onclick="showEmailModal()" class="btn">
-                🚀 Notify Me When Live
-            </button>
-        </div>
-        <br>
-                            <div class="logo">CF</div>
-
-        
-
-        <div class="footer">
-            © 2026 CampusForces • Making Campus Life Epic ✨
-        </div>
+<!-- COOKIE MODAL -->
+<div class="modal-bg" id="cookieModal">
+  <div class="consent-box">
+    <div class="consent-logo">Campus<span>Forces</span></div>
+    <h3>We value your privacy</h3>
+    <p>CampusForces uses cookies to display live visitor activity. Accept to enable the live stats bar, or reject to browse without any tracking.</p>
+    <div class="consent-btns">
+      <button class="btn-reject" onclick="rejectCookies()">Reject</button>
+      <button class="btn-accept-c" onclick="acceptCookies()">Accept all</button>
     </div>
+  </div>
+</div>
 
-    <!-- Email Modal -->
-    <div id="emailModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">×</span>
-            <h3>Get Notified When We Launch</h3>
-            <p>We'll send you an update as soon as CampusForces is back online.</p>
-            
-            <input type="email" id="userEmail" placeholder="Enter your email address">
-            
-            <button onclick="submitEmail()">Notify Me</button>
+<!-- TOAST -->
+<div id="toast"></div>
 
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#" class="logo">Campus<span>Forces</span></a>
+  <div class="nav-links">
+    <a onclick="smoothTo('contests')">Contests</a>
+    <a onclick="smoothTo('leaderboard')">Leaderboard</a>
+    <a onclick="smoothTo('features')">Features</a>
+    <a onclick="toast('Community coming soon!')">Community</a>
+  </div>
+  <div class="nav-right">
+    <button class="btn-nav-ghost" onclick="toast('Login page coming soon!')">Log in</button>
+    <button class="btn-nav-primary" onclick="toast('Registration opening soon!')">Join Free</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge"><div class="hero-badge-dot"></div>Season 4 contest — now live</div>
+  <h1>Where campus coders <em>compete</em> and grow</h1>
+  <p class="hero-sub">CampusForces is the premier competitive programming platform built for college students. Sharpen your skills, climb the leaderboard, and get hired by top companies.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="smoothTo('contests')">Start competing</button>
+    <button class="btn-ghost" onclick="smoothTo('leaderboard')">View leaderboard</button>
+  </div>
+  <div class="hero-scroll">
+    <span>scroll</span>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track" id="mtrack">
+    <span class="marquee-item">&#9671; <b>Spring Sprint 2025</b> — Registrations open</span>
+    <span class="marquee-item">&#9651; <b>arjun_codes</b> solved Dijkstra Madness in 4:23</span>
+    <span class="marquee-item">&#9632; <b>28,000+</b> students registered</span>
+    <span class="marquee-item">&#9671; <b>Graph Theory Cup</b> — Ends in 3 days</span>
+    <span class="marquee-item">&#9651; <b>priya_dsa</b> climbed to rank #2</span>
+    <span class="marquee-item">&#9632; <b>Placement Prep Series</b> — Join now</span>
+    <span class="marquee-item">&#9671; <b>2.1 Million</b> problems solved</span>
+    <span class="marquee-item">&#9651; <b>Season 4</b> — New challenges every week</span>
+    <span class="marquee-item">&#9671; <b>Spring Sprint 2025</b> — Registrations open</span>
+    <span class="marquee-item">&#9651; <b>arjun_codes</b> solved Dijkstra Madness in 4:23</span>
+    <span class="marquee-item">&#9632; <b>28,000+</b> students registered</span>
+    <span class="marquee-item">&#9671; <b>Graph Theory Cup</b> — Ends in 3 days</span>
+    <span class="marquee-item">&#9651; <b>priya_dsa</b> climbed to rank #2</span>
+    <span class="marquee-item">&#9632; <b>Placement Prep Series</b> — Join now</span>
+    <span class="marquee-item">&#9671; <b>2.1 Million</b> problems solved</span>
+    <span class="marquee-item">&#9651; <b>Season 4</b> — New challenges every week</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div id="stats">
+  <div class="stat-cell">
+    <span class="stat-lbl">Registered students</span>
+    <div class="stat-val"><span id="sStudents">0</span>K+</div>
+    <span class="stat-sub">Across 300+ colleges in India</span>
+  </div>
+  <div class="stat-cell">
+    <span class="stat-lbl">Contests hosted</span>
+    <div class="stat-val"><span id="sContests">0</span>+</div>
+    <span class="stat-sub">Monthly &amp; seasonal rounds</span>
+  </div>
+  <div class="stat-cell">
+    <span class="stat-lbl">Problems solved</span>
+    <div class="stat-val"><span id="sProblems">0</span>M</div>
+    <span class="stat-sub">And growing every day</span>
+  </div>
+</div>
+
+<!-- CONTESTS -->
+<section class="section" id="contests">
+  <div class="sec-head">
+    <span class="sec-lbl">Active contests</span>
+    <span class="sec-link" onclick="toast('All contests page coming soon!')">View all →</span>
+  </div>
+  <div class="cards-grid">
+    <div class="card" onclick="toast('Opening Spring Sprint 2025...')">
+      <div class="card-thumb ct1">
+        <div class="card-icon">&#9651;</div>
+        <div class="card-chip chip-live">Live</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Spring Sprint 2025</div>
+        <div class="card-meta">Algorithms · Division 2 · Ends in <span id="cd1">—</span></div>
+        <div class="card-foot">
+          <span class="card-pts" id="p1">1,240 registered</span>
+          <button class="btn-reg" id="rb1" onclick="event.stopPropagation();regContest('rb1','p1')">Register</button>
         </div>
-        
+      </div>
     </div>
+    <div class="card" onclick="toast('Opening Graph Theory Cup...')">
+      <div class="card-thumb ct2">
+        <div class="card-icon">&#9671;</div>
+        <div class="card-chip chip-open">Open</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Graph Theory Cup</div>
+        <div class="card-meta">Data Structures · Division 1 · Open enrollment</div>
+        <div class="card-foot">
+          <span class="card-pts" id="p2">876 registered</span>
+          <button class="btn-reg" id="rb2" onclick="event.stopPropagation();regContest('rb2','p2')">Register</button>
+        </div>
+      </div>
+    </div>
+    <div class="card" onclick="toast('Opening Placement Prep Series...')">
+      <div class="card-thumb ct3">
+        <div class="card-icon">&#9632;</div>
+        <div class="card-chip chip-on">Ongoing</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Placement Prep Series</div>
+        <div class="card-meta">Mixed · All divisions · Ongoing practice</div>
+        <div class="card-foot">
+          <span class="card-pts" id="p3">3,410 registered</span>
+          <button class="btn-reg" id="rb3" onclick="event.stopPropagation();regContest('rb3','p3')">Join</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <script>
-        function createParticles() {
-            const container = document.getElementById('particles');
-            container.innerHTML = ''; // Clear old particles
+<!-- FEATURES -->
+<section class="section" id="features" style="padding-top:0">
+  <div class="sec-head"><span class="sec-lbl">Why CampusForces</span></div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon">&#9651;</div>
+      <div class="feat-title">Real contest experience</div>
+      <div class="feat-desc">Compete in timed rounds that mirror ICPC, Codeforces, and top company hiring challenges. Pressure-test your skills before it counts.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">&#9670;</div>
+      <div class="feat-title">College leaderboards</div>
+      <div class="feat-desc">Rank not just globally but within your own campus — see who's the best coder at your college and challenge them directly.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">&#9632;</div>
+      <div class="feat-title">Recruiter visibility</div>
+      <div class="feat-desc">Top performers are seen by our 40+ partner companies. Your CampusForces rank is your most honest résumé.</div>
+    </div>
+  </div>
+</section>
 
-            for (let i = 0; i < 80; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const size = Math.random() * 8 + 4;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                particle.style.left = `${Math.random() * 100}vw`;
-                particle.style.bottom = `-${Math.random() * 50}px`;   // Start from bottom
-                particle.style.animationDuration = `${Math.random() * 30 + 20}s`;
-                particle.style.animationDelay = `-${Math.random() * 30}s`;
-                particle.style.opacity = Math.random() * 0.6 + 0.4;
-                
-                container.appendChild(particle);
-            }
-        }
+<!-- LEADERBOARD -->
+<section class="section" id="leaderboard" style="padding-top:0">
+  <div class="sec-head">
+    <span class="sec-lbl">Top rankers this week</span>
+    <span class="sec-link" onclick="toast('Full leaderboard loading...')">Full leaderboard →</span>
+  </div>
+  <div class="lb-wrap">
+    <table class="lb-table">
+      <thead>
+        <tr>
+          <th>#</th><th>Coder</th>
+          <th style="text-align:right">Score</th>
+          <th style="text-align:right">Solved</th>
+          <th style="text-align:right">Change</th>
+        </tr>
+      </thead>
+      <tbody id="lbBody"></tbody>
+    </table>
+  </div>
+</section>
 
-        function showEmailModal() {
-            document.getElementById('emailModal').style.display = 'flex';
-        }
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Campus<span>Forces</span></div>
+  <div class="footer-links">
+    <a onclick="toast('About page')">About</a>
+    <a onclick="smoothTo('contests')">Contests</a>
+    <a onclick="toast('Privacy policy')">Privacy</a>
+    <a onclick="toast('Terms of service')">Terms</a>
+    <a onclick="toast('Contact us')">Contact</a>
+  </div>
+  <div class="footer-copy">&copy; 2025 CampusForces. All rights reserved.</div>
+</footer>
 
-        function closeModal() {
-            document.getElementById('emailModal').style.display = 'none';
-        }
+<!-- VISITOR BAR -->
+<div id="vBar">
+  <div class="vb-pill" id="vPill">
+    <div class="vb-dot" id="vDot"></div>
+    <span id="vTxt">Online</span>
+  </div>
+  <div class="vb-sep"></div>
+  <div class="vb-stat"><span class="vb-lbl">Today</span><span class="vb-num" id="vToday">341</span></div>
+  <div class="vb-sep"></div>
+  <div class="vb-stat"><span class="vb-lbl">Total</span><span class="vb-num" id="vTotal">12,940</span></div>
+  <div class="vb-sep"></div>
+  <div class="vb-clock"><span class="vb-time" id="vClock">00:00:00</span><span class="vb-tz" id="vTz">IST</span></div>
+  <div class="vb-sep"></div>
+  <div class="vb-ping"><div class="ping-dot"></div><span id="vPing">just now</span></div>
+</div>
 
-        function submitEmail() {
-            const email = document.getElementById('userEmail').value.trim();
-            if (email === "" || !email.includes("@")) {
-                alert("Please enter a valid email address");
-                return;
-            }
+<script>
+/* ─── TOAST ──────────────────────────────── */
+var _tt;
+function toast(msg){
+  var el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(_tt);_tt=setTimeout(function(){el.classList.remove('show')},2800);
+}
 
-            console.log("New Subscriber Email:", email);
-            alert(`Thank you! 🎉\nWe'll notify you at ${email} when CampusForces is live.`);
+/* ─── SMOOTH SCROLL ──────────────────────── */
+function smoothTo(id){
+  var el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
 
-            closeModal();
-            document.getElementById('userEmail').value = "";
-        }
+/* ─── COOKIE CONSENT ─────────────────────── */
+function showConsent(){
+  var m=document.getElementById('cookieModal');
+  m.style.display='flex';
+  requestAnimationFrame(function(){requestAnimationFrame(function(){m.classList.add('show')})});
+  document.body.style.overflow='hidden';
+}
+function hideConsent(){
+  var m=document.getElementById('cookieModal');
+  m.classList.remove('show');
+  setTimeout(function(){m.style.display='none'},380);
+  document.body.style.overflow='';
+}
+function acceptCookies(){hideConsent();startBar();}
+function rejectCookies(){hideConsent();toast('No tracking — browsing freely.');}
+document.getElementById('cookieModal').style.display='none';
+setTimeout(showConsent,1400);
 
-        // Initialize
-        window.onload = () => {
-            createParticles();
-        };
+/* ─── VISITOR BAR ────────────────────────── */
+var todayCount=341,totalCount=12940,secSince=0;
+function applyStatus(){
+  var pill=document.getElementById('vPill'),dot=document.getElementById('vDot'),txt=document.getElementById('vTxt');
+  if(OWNER_STATUS==='online'){pill.className='vb-pill online';dot.className='vb-dot on';txt.textContent='Online';}
+  else{pill.className='vb-pill offline';dot.className='vb-dot off';txt.textContent='Offline';}
+}
+function tickClock(){
+  var n=new Date(),h=String(n.getHours()).padStart(2,'0'),m=String(n.getMinutes()).padStart(2,'0'),s=String(n.getSeconds()).padStart(2,'0');
+  document.getElementById('vClock').textContent=h+':'+m+':'+s;
+  try{var tz=Intl.DateTimeFormat().resolvedOptions().timeZone.split('/');document.getElementById('vTz').textContent=tz[tz.length-1].replace(/_/g,' ').slice(0,9);}catch(e){}
+}
+function tickPing(){
+  secSince++;
+  var el=document.getElementById('vPing');
+  if(secSince<10)el.textContent='just now';
+  else if(secSince<60)el.textContent=secSince+'s ago';
+  else el.textContent=Math.floor(secSince/60)+'m ago';
+}
+function tickVisitors(){
+  var b=Math.floor(Math.random()*3)+1;
+  todayCount+=b;totalCount+=b;secSince=0;
+  document.getElementById('vToday').textContent=todayCount.toLocaleString();
+  document.getElementById('vTotal').textContent=totalCount.toLocaleString();
+}
+function startBar(){
+  var bar=document.getElementById('vBar');
+  bar.style.display='flex';
+  applyStatus();
+  document.getElementById('vToday').textContent=todayCount.toLocaleString();
+  document.getElementById('vTotal').textContent=totalCount.toLocaleString();
+  tickClock();
+  setInterval(tickClock,1000);
+  setInterval(tickPing,1000);
+  setInterval(tickVisitors,5000);
+}
 
-        // Close modal on outside click
-        window.onclick = function(event) {
-            const modal = document.getElementById('emailModal');
-            if (event.target === modal) closeModal();
-        };
-    </script>
+/* ─── STAT COUNTER ANIMATION ─────────────── */
+function animCount(id,target,dec){
+  var el=document.getElementById(id),cur=0,dur=1400,fps=60,steps=dur/(1000/fps),inc=target/steps;
+  var t=setInterval(function(){
+    cur=Math.min(cur+inc,target);
+    el.textContent=dec?cur.toFixed(1):Math.floor(cur);
+    if(cur>=target)clearInterval(t);
+  },1000/fps);
+}
+var statsObs=new IntersectionObserver(function(e){
+  if(e[0].isIntersecting){
+    animCount('sStudents',28,false);
+    animCount('sContests',180,false);
+    animCount('sProblems',2.1,true);
+    statsObs.disconnect();
+  }
+},{threshold:.3});
+statsObs.observe(document.getElementById('stats'));
+
+/* ─── LEADERBOARD ────────────────────────── */
+var lbData=[
+  {rank:1,name:'arjun_codes',college:'IIT Bombay',score:3840,solved:142,change:0},
+  {rank:2,name:'priya_dsa',college:'NIT Trichy',score:3720,solved:138,change:1},
+  {rank:3,name:'karan_99',college:'BITS Pilani',score:3610,solved:134,change:-1},
+  {rank:4,name:'sneha_cp',college:'VIT Vellore',score:3490,solved:129,change:2},
+  {rank:5,name:'rohit_devv',college:'DTU Delhi',score:3380,solved:125,change:0},
+  {rank:6,name:'aman_algo',college:'IIT Delhi',score:3210,solved:119,change:3},
+  {rank:7,name:'meera_x',college:'NSUT Delhi',score:3100,solved:115,change:-2},
+];
+function renderLB(){
+  var body=document.getElementById('lbBody');body.innerHTML='';
+  lbData.forEach(function(r){
+    var rc=r.rank<=3?'rank r'+r.rank:'rank';
+    var chg=r.change===0?'<span class="chg-eq">—</span>':r.change>0?'<span class="chg-up">▲'+r.change+'</span>':'<span class="chg-dn">▼'+Math.abs(r.change)+'</span>';
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td class="'+rc+'">'+r.rank+'</td><td><span class="uname">'+r.name+'</span><span class="ucollege">'+r.college+'</span></td><td class="lb-score">'+r.score.toLocaleString()+'</td><td class="lb-solved">'+r.solved+'</td><td style="text-align:right">'+chg+'</td>';
+    tr.onclick=function(){toast('Profile: '+r.name+' · Score '+r.score)};
+    body.appendChild(tr);
+  });
+}
+renderLB();
+setInterval(function(){
+  lbData.forEach(function(r){
+    r.score+=Math.floor(Math.random()*10);
+    if(Math.random()>.7)r.solved++;
+    r.change=Math.floor(Math.random()*5)-2;
+  });
+  lbData.sort(function(a,b){return b.score-a.score});
+  lbData.forEach(function(r,i){r.rank=i+1});
+  renderLB();
+},8000);
+
+/* ─── CONTEST REGISTRATION ───────────────── */
+var regMap={};
+function regContest(btnId,ptId){
+  if(regMap[btnId]){toast('Already registered!');return;}
+  regMap[btnId]=true;
+  var btn=document.getElementById(btnId);
+  btn.textContent='Registered ✓';btn.className='btn-reg done';
+  var el=document.getElementById(ptId);
+  var cur=parseInt(el.textContent.replace(/,/g,''));
+  el.textContent=(cur+1).toLocaleString()+' registered';
+  toast('Registered successfully! Check your email.');
+}
+
+/* ─── LIVE COUNTDOWN ─────────────────────── */
+var endMs=Date.now()+(3*86400+7200)*1000;
+function tickCountdown(){
+  var diff=endMs-Date.now();
+  if(diff<=0){document.getElementById('cd1').textContent='Ended';return;}
+  var d=Math.floor(diff/86400000);
+  var h=Math.floor((diff%86400000)/3600000);
+  var m=Math.floor((diff%3600000)/60000);
+  var s=Math.floor((diff%60000)/1000);
+  document.getElementById('cd1').textContent=d+'d '+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+tickCountdown();setInterval(tickCountdown,1000);
+
+/* ─── NAVBAR SCROLL ──────────────────────── */
+window.addEventListener('scroll',function(){
+  document.getElementById('navbar').style.background=window.scrollY>60?'rgba(8,8,15,0.98)':'rgba(8,8,15,0.82)';
+},{passive:true});
+</script>
 </body>
 </html>
+
+
+

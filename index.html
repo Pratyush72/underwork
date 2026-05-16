@@ -6,391 +6,727 @@
 <title>CampusForces — Compete. Grow. Get Hired.</title>
 <style>
 :root{
-  --green:#1D9E75;--green-light:#5DCAA5;--green-bg:rgba(29,158,117,0.12);
-  --red:#E24B4A;--red-bg:rgba(226,75,74,0.13);--blue:#378ADD;
-  --bg:#08080f;--bg2:#0f0f1a;--bg3:#13131e;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
-  --t1:#ffffff;--t2:rgba(255,255,255,0.55);--t3:rgba(255,255,255,0.28);--t4:rgba(255,255,255,0.14);
+  --green:#1D9E75;--gl:#5DCAA5;--gd:#04342C;
+  --red:#E24B4A;--rb:rgba(226,75,74,0.13);
+  --blue:#378ADD;--amber:#EF9F27;
+  --bg:#08080f;--bg2:#0f0f1a;--bg3:#13131e;--bg4:#1a1a2a;
+  --br:rgba(255,255,255,0.07);--br2:rgba(255,255,255,0.12);--br3:rgba(255,255,255,0.20);
+  --t1:#fff;--t2:rgba(255,255,255,.55);--t3:rgba(255,255,255,.28);--t4:rgba(255,255,255,.12);
+  --r:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+.page{display:none}.page.active{display:block}
 
-/* NAVBAR */
-#navbar{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(8,8,15,0.82);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border);transition:background .3s}
-.logo{font-size:20px;font-weight:800;letter-spacing:-.04em;text-decoration:none;color:var(--t1)}
-.logo span{color:var(--green-light)}
-.nav-links{display:flex;gap:32px}
-.nav-links a{font-size:13px;color:var(--t2);text-decoration:none;transition:color .2s;cursor:pointer}
-.nav-links a:hover{color:var(--t1)}
-.nav-right{display:flex;align-items:center;gap:12px}
-.btn-nav-ghost{padding:8px 20px;background:transparent;color:var(--t2);border:0.5px solid var(--border2);border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
-.btn-nav-ghost:hover{color:var(--t1);border-color:rgba(255,255,255,0.3)}
-.btn-nav-primary{padding:8px 20px;background:var(--green-light);color:#04342C;border:none;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s}
-.btn-nav-primary:hover{opacity:.88;transform:translateY(-1px)}
+/* ── NAVBAR ─────────────────────────────── */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:800;display:flex;align-items:center;justify-content:space-between;padding:0 52px;height:64px;background:rgba(8,8,15,.88);backdrop-filter:blur(20px);border-bottom:.5px solid var(--br);transition:background .3s}
+.logo{font-size:20px;font-weight:800;letter-spacing:-.04em;color:var(--t1);cursor:pointer}
+.logo span{color:var(--gl)}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:13px;color:var(--t2);cursor:pointer;transition:color .2s;text-decoration:none}
+.nav-links a:hover,.nav-links a.act{color:var(--t1)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-gs{padding:8px 18px;background:transparent;color:var(--t2);border:.5px solid var(--br2);border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-gs:hover{color:var(--t1);border-color:var(--br3)}
+.btn-gn{padding:8px 18px;background:var(--gl);color:var(--gd);border:none;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s}
+.btn-gn:hover{opacity:.88;transform:translateY(-1px)}
 
-/* HERO */
+/* ── USER AVATAR PILL ───────────────────── */
+.upill{display:flex;align-items:center;gap:8px;padding:5px 14px 5px 5px;background:rgba(93,202,165,.1);border:.5px solid rgba(93,202,165,.25);border-radius:999px;cursor:pointer;position:relative;transition:background .2s}
+.upill:hover{background:rgba(93,202,165,.18)}
+.uavatar{width:30px;height:30px;border-radius:50%;background:var(--gl);color:var(--gd);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.uname-p{font-size:13px;font-weight:600;color:var(--gl)}
+.uarrow{font-size:9px;color:var(--gl);opacity:.7}
+
+/* ── PROFILE DROPDOWN ───────────────────── */
+.pdrop{position:absolute;top:calc(100% + 10px);right:0;background:var(--bg3);border:.5px solid var(--br2);border-radius:14px;padding:8px;min-width:210px;display:none;flex-direction:column;gap:2px;z-index:900;box-shadow:0 20px 60px rgba(0,0,0,.8)}
+.pdrop.open{display:flex}
+.pd-hdr{padding:12px 12px 10px;border-bottom:.5px solid var(--br);margin-bottom:4px}
+.pd-nm{font-size:14px;font-weight:700;color:var(--t1)}
+.pd-em{font-size:11px;color:var(--t3);margin-top:2px}
+.pdi{padding:10px 12px;border-radius:8px;font-size:13px;color:var(--t2);cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .15s;white-space:nowrap}
+.pdi:hover{background:rgba(255,255,255,.05);color:var(--t1)}
+.pdi.danger:hover{background:rgba(226,75,74,.1);color:#f07070}
+.pdsep{height:.5px;background:var(--br);margin:4px 0}
+
+/* ── HERO ───────────────────────────────── */
 #hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 200px;gap:24px;position:relative}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;border:0.5px solid rgba(93,202,165,0.3);background:rgba(93,202,165,0.08);font-size:11px;color:var(--green-light);letter-spacing:.08em;text-transform:uppercase}
-.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green-light);animation:pulse 2s infinite}
+.hbadge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;border-radius:999px;border:.5px solid rgba(93,202,165,.3);background:rgba(93,202,165,.07);font-size:11px;color:var(--gl);letter-spacing:.08em;text-transform:uppercase}
+.hdot{width:6px;height:6px;border-radius:50%;background:var(--gl);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
-#hero h1{font-size:clamp(40px,7vw,76px);font-weight:800;letter-spacing:-.04em;line-height:1.04;max-width:720px}
+#hero h1{font-size:clamp(38px,7vw,78px);font-weight:800;letter-spacing:-.04em;line-height:1.04;max-width:740px}
 #hero h1 em{font-style:normal;color:var(--t3)}
-.hero-sub{font-size:17px;color:var(--t2);max-width:480px;line-height:1.8}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
-.btn-primary{padding:15px 36px;background:var(--green-light);color:#04342C;border-radius:999px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:opacity .2s,transform .15s}
-.btn-primary:hover{opacity:.88;transform:translateY(-2px)}
-.btn-ghost{padding:15px 36px;background:transparent;color:var(--t2);border-radius:999px;font-size:15px;font-weight:500;border:0.5px solid var(--border2);cursor:pointer;transition:all .2s}
-.btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:var(--t1);transform:translateY(-2px)}
-.hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--t4);font-size:11px;letter-spacing:.08em;text-transform:uppercase;animation:bounce 2.5s infinite}
-@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+.hsub{font-size:17px;color:var(--t2);max-width:500px;line-height:1.8}
+.hbtns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.btn-p{padding:15px 36px;background:var(--gl);color:var(--gd);border-radius:999px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:opacity .2s,transform .15s}
+.btn-p:hover{opacity:.88;transform:translateY(-2px)}
+.btn-g{padding:15px 36px;background:transparent;color:var(--t2);border-radius:999px;font-size:15px;font-weight:500;border:.5px solid var(--br2);cursor:pointer;transition:all .2s}
+.btn-g:hover{border-color:var(--br3);color:var(--t1);transform:translateY(-2px)}
+.shint{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--t4);font-size:10px;letter-spacing:.1em;text-transform:uppercase;animation:sb 2.5s infinite}
+@keyframes sb{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 
-/* MARQUEE */
-.marquee-wrap{border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);padding:16px 0;overflow:hidden;white-space:nowrap;background:var(--bg2)}
-.marquee-track{display:inline-flex;gap:48px;animation:marquee 24s linear infinite}
-@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.marquee-item{font-size:13px;color:var(--t3)}
-.marquee-item b{color:var(--green-light);font-weight:700}
+/* ── MARQUEE ────────────────────────────── */
+.mqwrap{border-top:.5px solid var(--br);border-bottom:.5px solid var(--br);padding:15px 0;overflow:hidden;white-space:nowrap;background:var(--bg2)}
+.mqtrack{display:inline-flex;gap:52px;animation:mq 26s linear infinite}
+@keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.mqi{font-size:13px;color:var(--t3)}.mqi b{color:var(--gl);font-weight:700}
 
-/* STATS */
-#stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:0.5px solid var(--border)}
-.stat-cell{padding:40px 52px;border-right:0.5px solid var(--border);display:flex;flex-direction:column;gap:6px}
-.stat-cell:last-child{border-right:none}
-.stat-lbl{font-size:10px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase}
-.stat-val{font-size:44px;font-weight:800;color:var(--t1);letter-spacing:-.04em;line-height:1}
-.stat-val span{color:var(--green-light)}
-.stat-sub{font-size:13px;color:var(--t3);margin-top:2px}
+/* ── STATS ──────────────────────────────── */
+#stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:.5px solid var(--br)}
+.sc{padding:36px 44px;border-right:.5px solid var(--br);display:flex;flex-direction:column;gap:5px}
+.sc:last-child{border-right:none}
+.sc-lbl{font-size:10px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase}
+.sc-val{font-size:40px;font-weight:800;color:var(--t1);letter-spacing:-.04em;line-height:1}
+.sc-val span{color:var(--gl)}
+.sc-sub{font-size:12px;color:var(--t3);margin-top:2px}
 
-/* SECTIONS */
-.section{padding:80px 52px;border-top:0.5px solid var(--border)}
-.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+/* ── SECTIONS ───────────────────────────── */
+.section{padding:80px 52px;border-top:.5px solid var(--br)}
+.sec-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
 .sec-lbl{font-size:10px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase}
-.sec-link{font-size:13px;color:var(--t3);cursor:pointer;transition:color .2s}
-.sec-link:hover{color:var(--green-light)}
+.sec-lnk{font-size:13px;color:var(--t3);cursor:pointer;transition:color .2s}
+.sec-lnk:hover{color:var(--gl)}
 
-/* CARDS */
-.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.card{border-radius:16px;border:0.5px solid var(--border);overflow:hidden;cursor:pointer;transition:border-color .25s,transform .2s;background:var(--bg2)}
+/* ── CONTEST CARDS ──────────────────────── */
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{border-radius:var(--r);border:.5px solid var(--br);overflow:hidden;cursor:pointer;transition:border-color .25s,transform .2s;background:var(--bg2)}
 .card:hover{border-color:rgba(93,202,165,.3);transform:translateY(-3px)}
-.card-thumb{height:130px;display:flex;align-items:center;justify-content:center;position:relative}
-.ct1{background:#040f09}.ct2{background:#09090f}.ct3{background:#0f0a04}
-.card-icon{font-size:42px;opacity:.08}
-.card-chip{position:absolute;top:12px;right:12px;padding:4px 12px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em}
-.chip-live{background:rgba(29,158,117,.18);color:var(--green-light);border:0.5px solid rgba(93,202,165,.35)}
-.chip-open{background:rgba(55,138,221,.15);color:#85B7EB;border:0.5px solid rgba(55,138,221,.3)}
-.chip-on{background:rgba(239,159,39,.15);color:#EF9F27;border:0.5px solid rgba(239,159,39,.3)}
-.card-body{padding:18px 20px 20px}
-.card-title{font-size:15px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:5px}
-.card-meta{font-size:11px;color:var(--t3);margin-bottom:16px}
-.card-foot{display:flex;justify-content:space-between;align-items:center}
-.card-pts{font-size:12px;color:var(--t3)}
-.btn-reg{padding:7px 16px;background:rgba(255,255,255,.05);color:var(--t2);border-radius:999px;font-size:12px;font-weight:600;border:0.5px solid var(--border);cursor:pointer;transition:all .2s}
-.btn-reg:hover{background:rgba(93,202,165,.12);color:var(--green-light);border-color:rgba(93,202,165,.35)}
-.btn-reg.done{background:rgba(29,158,117,.15);color:var(--green-light);border-color:rgba(93,202,165,.35);cursor:default}
+.cthumb{height:120px;display:flex;align-items:center;justify-content:center;position:relative}
+.ct1{background:#040f09}.ct2{background:#09090f}.ct3{background:#0f0a04}.ct4{background:#080d14}.ct5{background:#0f090a}.ct6{background:#0a0d08}
+.cicon{font-size:40px;opacity:.08}
+.chip{position:absolute;top:11px;right:11px;padding:3px 11px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em}
+.chip-live{background:rgba(29,158,117,.18);color:var(--gl);border:.5px solid rgba(93,202,165,.35)}
+.chip-open{background:rgba(55,138,221,.15);color:#85B7EB;border:.5px solid rgba(55,138,221,.3)}
+.chip-on{background:rgba(239,159,39,.15);color:var(--amber);border:.5px solid rgba(239,159,39,.3)}
+.chip-soon{background:rgba(255,255,255,.07);color:var(--t3);border:.5px solid var(--br)}
+.cbody{padding:16px 18px 18px}
+.ctitle{font-size:14px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:4px}
+.cmeta{font-size:11px;color:var(--t3);margin-bottom:14px}
+.cfoot{display:flex;justify-content:space-between;align-items:center}
+.cpts{font-size:12px;color:var(--t3)}
+.btn-reg{padding:6px 14px;background:rgba(255,255,255,.05);color:var(--t2);border-radius:999px;font-size:12px;font-weight:600;border:.5px solid var(--br);cursor:pointer;transition:all .2s}
+.btn-reg:hover{background:rgba(93,202,165,.12);color:var(--gl);border-color:rgba(93,202,165,.35)}
+.btn-reg.done{background:rgba(29,158,117,.15);color:var(--gl);border-color:rgba(93,202,165,.35);cursor:default}
 
-/* FEATURES */
+/* ── STEPS / FEATURES / TESTIMONIALS ───── */
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.step{background:var(--bg2);border:.5px solid var(--br);border-radius:var(--r);padding:28px 22px;display:flex;flex-direction:column;gap:10px;position:relative}
+.step-num{font-size:48px;font-weight:800;color:rgba(255,255,255,.04);position:absolute;top:14px;right:16px;line-height:1}
+.step-ico{font-size:22px;color:var(--gl)}
+.step-title{font-size:14px;font-weight:700;color:rgba(255,255,255,.85)}
+.step-desc{font-size:13px;color:var(--t3);line-height:1.7}
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.feat-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:12px}
-.feat-icon{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:0.5px solid var(--border);border-radius:10px;font-size:18px;color:var(--green-light)}
+.feat{background:var(--bg2);border:.5px solid var(--br);border-radius:var(--r);padding:28px 24px;display:flex;flex-direction:column;gap:12px;transition:border-color .2s}
+.feat:hover{border-color:rgba(93,202,165,.2)}
+.feat-ico{width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:.5px solid var(--br);border-radius:10px;font-size:19px;color:var(--gl)}
 .feat-title{font-size:15px;font-weight:700;color:rgba(255,255,255,.85)}
 .feat-desc{font-size:13px;color:var(--t3);line-height:1.75}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.testi{background:var(--bg2);border:.5px solid var(--br);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:14px}
+.testi-q{font-size:14px;color:var(--t2);line-height:1.8;font-style:italic}
+.testi-au{display:flex;align-items:center;gap:10px}
+.tav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ta1{background:rgba(29,158,117,.2);color:var(--gl)}
+.ta2{background:rgba(55,138,221,.2);color:#85B7EB}
+.ta3{background:rgba(239,159,39,.2);color:var(--amber)}
+.testi-nm{font-size:13px;font-weight:700;color:rgba(255,255,255,.85)}
+.testi-co{font-size:11px;color:var(--t3)}
 
-/* LEADERBOARD */
-.lb-wrap{border:0.5px solid var(--border);border-radius:16px;overflow:hidden}
+/* ── LEADERBOARD ────────────────────────── */
+.lb-wrap{border:.5px solid var(--br);border-radius:var(--r);overflow:hidden}
 .lb-table{width:100%;border-collapse:collapse;font-size:13px}
-.lb-table th{text-align:left;padding:12px 20px;font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;border-bottom:0.5px solid var(--border);background:var(--bg3)}
-.lb-table td{padding:15px 20px;border-bottom:0.5px solid rgba(255,255,255,.04);color:var(--t2)}
+.lb-table th{text-align:left;padding:12px 20px;font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;border-bottom:.5px solid var(--br);background:var(--bg3)}
+.lb-table td{padding:14px 20px;border-bottom:.5px solid rgba(255,255,255,.03);color:var(--t2)}
 .lb-table tr:last-child td{border-bottom:none}
 .lb-table tbody tr{cursor:pointer;transition:background .15s}
 .lb-table tbody tr:hover td{background:rgba(255,255,255,.025)}
-.rank{font-size:13px;font-weight:700;color:var(--t3);width:40px}
-.r1{color:#EF9F27}.r2{color:#B4B2A9}.r3{color:#D85A30}
-.uname{font-weight:700;color:rgba(255,255,255,.88)}
-.ucollege{font-size:11px;color:var(--t3);display:block;margin-top:2px}
-.lb-score{font-weight:700;color:var(--green-light);text-align:right}
-.lb-solved{text-align:right;color:var(--t3)}
-.chg-up{color:#5DCAA5;font-size:12px;font-weight:600}
-.chg-dn{color:#f07070;font-size:12px;font-weight:600}
-.chg-eq{color:var(--t4);font-size:12px}
+.rk{font-size:13px;font-weight:700;color:var(--t3);width:40px}
+.r1{color:var(--amber)}.r2{color:#B4B2A9}.r3{color:#D85A30}
+.un{font-weight:700;color:rgba(255,255,255,.88)}
+.uc{font-size:11px;color:var(--t3);display:block;margin-top:1px}
+.lbs{font-weight:700;color:var(--gl);text-align:right}
+.lbso{text-align:right;color:var(--t3)}
+.cu{color:#5DCAA5;font-size:12px;font-weight:600}
+.cd{color:#f07070;font-size:12px;font-weight:600}
+.ceq{color:var(--t4);font-size:12px}
 
-/* VISITOR BAR */
-#vBar{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:600;display:none;align-items:center;background:#0d0d18;border:0.5px solid rgba(255,255,255,.13);border-radius:999px;padding:7px;gap:0;white-space:nowrap;box-shadow:0 8px 40px rgba(0,0,0,.7)}
-.vb-sep{width:.5px;height:26px;background:rgba(255,255,255,.07);flex-shrink:0}
-.vb-pill{display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:999px;font-size:13px;font-weight:700;flex-shrink:0;transition:background .4s,color .4s}
-.vb-pill.online{background:rgba(29,158,117,.15);color:var(--green-light)}
-.vb-pill.offline{background:var(--red-bg);color:#f07070}
-.vb-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:background .4s}
-.vb-dot.on{background:var(--green);animation:bon 2s infinite}
-.vb-dot.off{background:var(--red);animation:boff 1.3s infinite}
+/* ── COMPANIES / BLOG / CTA ─────────────── */
+.companies{display:flex;flex-wrap:wrap;gap:12px}
+.co-chip{padding:10px 20px;background:var(--bg2);border:.5px solid var(--br);border-radius:999px;font-size:13px;font-weight:600;color:var(--t3);transition:all .2s}
+.co-chip:hover{border-color:var(--br2);color:var(--t2)}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.blog-card{background:var(--bg2);border:.5px solid var(--br);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .25s,transform .2s}
+.blog-card:hover{border-color:rgba(93,202,165,.25);transform:translateY(-2px)}
+.blog-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:32px;opacity:.1}
+.bt1{background:#09100d}.bt2{background:#0b0c12}.bt3{background:#120a09}
+.blog-body{padding:16px 18px 18px}
+.blog-tag{font-size:10px;color:var(--gl);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+.blog-title{font-size:14px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:6px;line-height:1.4}
+.blog-meta{font-size:11px;color:var(--t3)}
+.cta-banner{background:var(--bg2);border:.5px solid rgba(93,202,165,.15);border-radius:20px;padding:60px 52px;display:flex;align-items:center;justify-content:space-between;gap:40px}
+.cta-banner h2{font-size:clamp(26px,4vw,44px);font-weight:800;letter-spacing:-.03em;max-width:500px;line-height:1.1}
+.cta-banner h2 em{font-style:normal;color:var(--t3)}
+.cta-r{display:flex;flex-direction:column;gap:10px;align-items:flex-end;flex-shrink:0}
+.cta-note{font-size:12px;color:var(--t3)}
+
+/* ── MY CONTESTS PAGE ───────────────────── */
+.myc-section{padding:100px 52px 60px}
+.myc-hero{margin-bottom:40px}
+.myc-hero h2{font-size:clamp(28px,5vw,48px);font-weight:800;letter-spacing:-.04em;margin-bottom:10px}
+.myc-hero h2 em{font-style:normal;color:var(--t3)}
+.myc-hero p{font-size:15px;color:var(--t2)}
+.myc-empty{text-align:center;padding:80px 24px;color:var(--t3);border:.5px solid var(--br);border-radius:var(--r);background:var(--bg2)}
+.myc-empty-ico{font-size:40px;opacity:.2;margin-bottom:16px}
+.myc-empty-txt{font-size:15px;margin-bottom:24px}
+.myc-card{background:var(--bg2);border:.5px solid var(--br);border-radius:var(--r);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px;transition:border-color .2s}
+.myc-card:hover{border-color:var(--br2)}
+.myc-left{display:flex;align-items:center;gap:14px}
+.myc-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.myc-dot.live{background:var(--gl);animation:pulse 2s infinite}
+.myc-dot.open{background:#85B7EB}.myc-dot.ongoing{background:var(--amber)}
+.myc-title{font-size:15px;font-weight:700;color:rgba(255,255,255,.88);margin-bottom:3px}
+.myc-meta{font-size:12px;color:var(--t3)}
+.myc-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.myc-badge{padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700}
+.myc-badge.live{background:rgba(29,158,117,.15);color:var(--gl);border:.5px solid rgba(93,202,165,.3)}
+.myc-badge.open{background:rgba(55,138,221,.15);color:#85B7EB;border:.5px solid rgba(55,138,221,.3)}
+.myc-badge.ongoing{background:rgba(239,159,39,.15);color:var(--amber);border:.5px solid rgba(239,159,39,.3)}
+.btn-wd{padding:7px 16px;background:rgba(226,75,74,.08);color:#f07070;border:.5px solid rgba(226,75,74,.22);border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-wd:hover{background:rgba(226,75,74,.18);border-color:rgba(226,75,74,.45)}
+
+/* ── SUB PAGES ──────────────────────────── */
+.subpage{padding:100px 52px 120px;min-height:80vh}
+.subpage h2{font-size:clamp(30px,5vw,56px);font-weight:800;letter-spacing:-.04em;margin-bottom:16px}
+.subpage h2 em{font-style:normal;color:var(--t3)}
+.subpage .lead{font-size:17px;color:var(--t2);line-height:1.8;max-width:600px;margin-bottom:48px}
+.subpage h3{font-size:20px;font-weight:700;margin:40px 0 12px;color:rgba(255,255,255,.9)}
+.subpage p{font-size:15px;color:var(--t3);line-height:1.9;margin-bottom:16px}
+.subpage ul{margin:0 0 20px 20px;display:flex;flex-direction:column;gap:8px}
+.subpage li{font-size:14px;color:var(--t3);line-height:1.7}
+.sp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:48px}
+.sp-card{background:var(--bg2);border:.5px solid var(--br);border-radius:var(--r);padding:24px}
+.sp-ico{font-size:24px;margin-bottom:12px;color:var(--gl)}
+.sp-title{font-size:14px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:6px}
+.sp-desc{font-size:13px;color:var(--t3);line-height:1.7}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:48px}
+.team-card{background:var(--bg2);border:.5px solid var(--br);border-radius:var(--r);padding:24px 20px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
+.team-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700}
+.ta-g{background:rgba(29,158,117,.18);color:var(--gl)}
+.ta-b{background:rgba(55,138,221,.18);color:#85B7EB}
+.ta-a{background:rgba(239,159,39,.18);color:var(--amber)}
+.ta-r{background:rgba(210,75,74,.18);color:#f07070}
+.team-nm{font-size:14px;font-weight:700;color:rgba(255,255,255,.85)}
+.team-role{font-size:12px;color:var(--t3)}
+.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:40px}
+.contact-card{background:var(--bg2);border:.5px solid var(--br);border-radius:var(--r);padding:28px 24px;display:flex;flex-direction:column;gap:8px}
+.contact-ico{font-size:22px;color:var(--gl)}
+.contact-lbl{font-size:13px;font-weight:700;color:rgba(255,255,255,.85)}
+.contact-val{font-size:14px;color:var(--t2)}
+.cf-form{display:flex;flex-direction:column;gap:14px;max-width:540px}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cf-input{width:100%;padding:13px 16px;background:var(--bg2);border:.5px solid var(--br2);border-radius:10px;font-size:14px;color:var(--t1);outline:none;transition:border-color .2s;font-family:inherit}
+.cf-input:focus{border-color:rgba(93,202,165,.4)}
+.cf-input::placeholder{color:var(--t3)}
+textarea.cf-input{resize:vertical;min-height:120px}
+.cf-submit{padding:14px 32px;background:var(--gl);color:var(--gd);border:none;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;align-self:flex-start;transition:opacity .2s}
+.cf-submit:hover{opacity:.88}
+.faq-list{display:flex;flex-direction:column;border:.5px solid var(--br);border-radius:var(--r);overflow:hidden}
+.faq-item{border-bottom:.5px solid var(--br)}.faq-item:last-child{border-bottom:none}
+.faq-q{padding:18px 22px;font-size:14px;font-weight:600;color:rgba(255,255,255,.8);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.faq-q:hover{background:rgba(255,255,255,.03)}
+.faq-q span{font-size:18px;color:var(--t3);transition:transform .2s;flex-shrink:0}
+.faq-a{padding:0 22px 18px;font-size:14px;color:var(--t3);line-height:1.8;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-q span{transform:rotate(45deg)}
+
+/* ── VISITOR BAR ────────────────────────── */
+#vBar{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:600;display:none;align-items:center;background:#0d0d18;border:.5px solid rgba(255,255,255,.13);border-radius:999px;padding:7px;gap:0;white-space:nowrap;box-shadow:0 8px 40px rgba(0,0,0,.7)}
+.vbsep{width:.5px;height:26px;background:rgba(255,255,255,.07);flex-shrink:0}
+.vbpill{display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:999px;font-size:13px;font-weight:700;flex-shrink:0;transition:background .4s,color .4s}
+.vbpill.online{background:rgba(29,158,117,.15);color:var(--gl)}
+.vbpill.offline{background:var(--rb);color:#f07070}
+.vbdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:background .4s}
+.vbdot.on{background:var(--green);animation:bon 2s infinite}
+.vbdot.off{background:var(--red);animation:boff 1.3s infinite}
 @keyframes bon{0%,100%{opacity:1}50%{opacity:.2}}
 @keyframes boff{0%,100%{opacity:1}50%{opacity:.35}}
-.vb-stat{display:flex;flex-direction:column;align-items:center;padding:2px 18px;flex-shrink:0}
-.vb-lbl{font-size:9px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
-.vb-num{font-size:16px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;line-height:1.1}
-.vb-clock{display:flex;flex-direction:column;align-items:center;padding:2px 18px;flex-shrink:0}
-.vb-time{font-size:16px;font-weight:500;color:rgba(255,255,255,.88);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
-.vb-tz{font-size:9px;color:var(--t3);letter-spacing:.07em;margin-top:1px}
-.vb-ping{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.04);font-size:12px;color:var(--t3);flex-shrink:0}
-.ping-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:pulse 3s infinite}
+.vbstat{display:flex;flex-direction:column;align-items:center;padding:2px 18px;flex-shrink:0}
+.vblbl{font-size:9px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
+.vbnum{font-size:16px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;line-height:1.1}
+.vbclock{display:flex;flex-direction:column;align-items:center;padding:2px 18px;flex-shrink:0}
+.vbtime{font-size:16px;font-weight:500;color:rgba(255,255,255,.88);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.vbtz{font-size:9px;color:var(--t3);letter-spacing:.07em;margin-top:1px}
+.vbping{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.04);font-size:12px;color:var(--t3);flex-shrink:0}
+.pingdot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:pulse 3s infinite}
 
-/* COOKIE MODAL */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .35s;pointer-events:none}
+/* ── MODALS ─────────────────────────────── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9000;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .35s;pointer-events:none}
 .modal-bg.show{opacity:1;pointer-events:all}
-.consent-box{background:#13131e;border:0.5px solid rgba(255,255,255,.12);border-radius:24px;max-width:440px;width:90%;padding:40px;transform:translateY(20px);transition:transform .35s}
-.modal-bg.show .consent-box{transform:translateY(0)}
-.consent-logo{font-size:17px;font-weight:800;color:var(--t1);letter-spacing:-.03em;margin-bottom:20px}
-.consent-logo span{color:var(--green-light)}
-.consent-box h3{font-size:20px;font-weight:700;color:var(--t1);margin-bottom:10px}
-.consent-box p{font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:28px}
-.consent-btns{display:flex;gap:10px}
-.btn-reject{flex:1;padding:13px;background:transparent;color:var(--t2);border:0.5px solid var(--border2);border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s}
-.btn-reject:hover{border-color:rgba(255,255,255,.3);color:var(--t1)}
-.btn-accept-c{flex:1;padding:13px;background:var(--green-light);color:#04342C;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s}
-.btn-accept-c:hover{opacity:.88}
+.modal-box{background:var(--bg3);border:.5px solid var(--br2);border-radius:24px;max-width:420px;width:90%;padding:40px;transform:translateY(18px);transition:transform .35s}
+.modal-bg.show .modal-box{transform:translateY(0)}
+.mlogo{font-size:17px;font-weight:800;color:var(--t1);letter-spacing:-.03em;margin-bottom:20px}
+.mlogo span{color:var(--gl)}
+.modal-box h3{font-size:20px;font-weight:700;color:var(--t1);margin-bottom:8px}
+.modal-box p{font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:24px}
+.mclose{width:32px;height:32px;background:rgba(255,255,255,.05);border:.5px solid var(--br);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--t3);transition:all .2s;margin-left:auto;margin-bottom:16px}
+.mclose:hover{background:rgba(255,255,255,.1);color:var(--t1)}
+.mi{width:100%;padding:13px 16px;background:var(--bg4);border:.5px solid var(--br2);border-radius:10px;font-size:14px;color:var(--t1);outline:none;transition:border-color .2s;font-family:inherit;margin-bottom:10px}
+.mi:focus{border-color:rgba(93,202,165,.4)}
+.mi::placeholder{color:var(--t3)}
+.mi-err{font-size:12px;color:#f07070;margin:-6px 0 8px;display:none}
+.mi-err.show{display:block}
+.mforgot{font-size:12px;color:var(--t3);cursor:pointer;text-align:right;margin-bottom:18px;transition:color .2s}
+.mforgot:hover{color:var(--gl)}
+.btn-full{width:100%;padding:13px;background:var(--gl);color:var(--gd);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s;margin-bottom:14px}
+.btn-full:hover{opacity:.88}
+.mdiv{display:flex;align-items:center;gap:12px;margin:14px 0;font-size:12px;color:var(--t3)}
+.mdiv::before,.mdiv::after{content:'';flex:1;height:.5px;background:var(--br)}
+.btn-full-g{width:100%;padding:13px;background:transparent;color:var(--t2);border:.5px solid var(--br2);border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-full-g:hover{border-color:var(--br3);color:var(--t1)}
+.mfoot{text-align:center;font-size:13px;color:var(--t3);margin-top:16px}
+.mfoot a{color:var(--gl);cursor:pointer;text-decoration:none}
+.cs-icon{width:60px;height:60px;border-radius:50%;background:rgba(239,159,39,.12);border:.5px solid rgba(239,159,39,.3);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 20px}
+.cs-row{display:flex;gap:8px;margin-top:8px}
+.cs-ei{flex:1;padding:11px 14px;background:var(--bg4);border:.5px solid var(--br2);border-radius:10px;font-size:13px;color:var(--t1);outline:none;font-family:inherit}
+.cs-ei::placeholder{color:var(--t3)}
+.cs-nb{padding:11px 18px;background:var(--gl);color:var(--gd);border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
 
-/* TOAST */
-#toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%) translateY(12px);background:#1c1c2c;border:0.5px solid rgba(255,255,255,.1);border-radius:999px;padding:10px 22px;font-size:13px;color:var(--t2);opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;z-index:700}
+/* ── TOAST ──────────────────────────────── */
+#toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%) translateY(12px);background:#1c1c2c;border:.5px solid rgba(255,255,255,.1);border-radius:999px;padding:10px 22px;font-size:13px;color:var(--t2);opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;z-index:9500}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* FOOTER */
-footer{padding:40px 52px 110px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.footer-logo{font-size:18px;font-weight:800;color:var(--t3);letter-spacing:-.04em}
-.footer-logo span{color:var(--green-light)}
-.footer-links{display:flex;gap:24px}
-.footer-links a{font-size:12px;color:var(--t3);text-decoration:none;transition:color .2s;cursor:pointer}
-.footer-links a:hover{color:var(--t2)}
-.footer-copy{font-size:12px;color:var(--t4)}
+/* ── FOOTER ─────────────────────────────── */
+footer{background:var(--bg2);border-top:.5px solid var(--br);padding:60px 52px 120px}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.fb p{font-size:13px;color:var(--t3);line-height:1.8;margin-top:12px;max-width:280px}
+.fc-t{font-size:11px;font-weight:700;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
+.fc a{display:block;font-size:13px;color:var(--t3);text-decoration:none;margin-bottom:10px;cursor:pointer;transition:color .2s}
+.fc a:hover{color:var(--t1)}
+.fb2{border-top:.5px solid var(--br);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.fcopy{font-size:12px;color:var(--t4)}
+.fsoc{display:flex;gap:10px}
+.soc{width:34px;height:34px;background:var(--bg3);border:.5px solid var(--br);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--t3);cursor:pointer;transition:all .2s}
+.soc:hover{border-color:var(--br2);color:var(--t1)}
 
-@media(max-width:900px){
+@media(max-width:960px){
   #navbar{padding:0 20px}.nav-links{display:none}
-  #stats{grid-template-columns:1fr}.stat-cell{border-right:none;border-bottom:0.5px solid var(--border);padding:28px 24px}
-  .cards-grid,.feat-grid{grid-template-columns:1fr}
-  .section{padding:48px 24px}
-  footer{padding:32px 24px 110px;flex-direction:column}
-  #vBar{left:12px;right:12px;transform:none;justify-content:center;bottom:14px}
+  #stats{grid-template-columns:1fr 1fr}.sc{border-bottom:.5px solid var(--br)}
+  .cards3,.cards4,.feat-grid,.steps-grid,.testi-grid,.blog-grid,.sp-grid,.team-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .section,.subpage,.myc-section{padding:48px 24px}
+  .cta-banner{flex-direction:column;padding:40px 24px}.cta-r{align-items:flex-start}
+  .ft{grid-template-columns:1fr 1fr}
+  footer{padding:48px 24px 120px}
+  #vBar{left:10px;right:10px;transform:none;justify-content:center;bottom:14px}
+  .cf-row{grid-template-columns:1fr}
+  .myc-card{flex-direction:column;align-items:flex-start}
 }
 </style>
 </head>
 <body>
 
-<!-- ✅ YOUR STATUS — change "online" to "offline" when away -->
 <script>var OWNER_STATUS='online';</script>
 
+<div id="toast"></div>
+
 <!-- COOKIE MODAL -->
-<div class="modal-bg" id="cookieModal">
-  <div class="consent-box">
-    <div class="consent-logo">Campus<span>Forces</span></div>
+<div class="modal-bg" id="cookieModal" style="display:none">
+  <div class="modal-box" style="max-width:440px">
+    <div class="mlogo">Campus<span>Forces</span></div>
     <h3>We value your privacy</h3>
-    <p>CampusForces uses cookies to display live visitor activity. Accept to enable the live stats bar, or reject to browse without any tracking.</p>
-    <div class="consent-btns">
-      <button class="btn-reject" onclick="rejectCookies()">Reject</button>
-      <button class="btn-accept-c" onclick="acceptCookies()">Accept all</button>
+    <p>CampusForces uses cookies to display live visitor activity. Accept to enable the live stats bar, or reject to browse without tracking.</p>
+    <div style="display:flex;gap:10px">
+      <button class="btn-full-g" style="margin:0" onclick="rejectCookies()">Reject</button>
+      <button class="btn-full" style="margin:0" onclick="acceptCookies()">Accept all</button>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
-<div id="toast"></div>
+<!-- LOGIN MODAL -->
+<div class="modal-bg" id="loginModal" style="display:none">
+  <div class="modal-box">
+    <div class="mclose" onclick="closeModal('loginModal')">&#10005;</div>
+    <div class="mlogo">Campus<span>Forces</span></div>
+
+    <!-- returning user banner — shown if localStorage has a saved user -->
+    <div id="liReturning" style="display:none;background:rgba(93,202,165,.07);border:.5px solid rgba(93,202,165,.25);border-radius:10px;padding:12px 14px;margin-bottom:16px;display:none;align-items:center;gap:10px">
+      <div id="liRetAvatar" style="width:32px;height:32px;border-radius:50%;background:var(--gl);color:var(--gd);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700;color:var(--gl)" id="liRetName"></div>
+        <div style="font-size:11px;color:var(--t3)" id="liRetEmail"></div>
+      </div>
+      <button onclick="quickLogin()" style="padding:7px 14px;background:var(--gl);color:var(--gd);border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">Continue →</button>
+    </div>
+
+    <div id="liDivider" style="display:none;text-align:center;font-size:11px;color:var(--t3);margin-bottom:14px">or log in as someone else</div>
+
+    <!-- main form: just name + email, no password needed -->
+    <input class="mi" type="text" id="liName" placeholder="Your name (e.g. Priya Sharma)" onkeydown="if(event.key==='Enter')document.getElementById('liEmail').focus()"/>
+    <input class="mi" type="email" id="liEmail" placeholder="Email address" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <input class="mi" type="text" id="liCollege" placeholder="College name (optional)" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <div class="mi-err" id="liErr"></div>
+
+    <button class="btn-full" onclick="doLogin()">Continue to CampusForces</button>
+    <div class="mdiv">or</div>
+    <button class="btn-full-g" onclick="toast('Google login coming soon!')">&#9675;&nbsp; Continue with Google</button>
+    <div class="mfoot" style="font-size:12px;color:var(--t3);text-align:center;line-height:1.7;margin-top:14px">Your name and email are saved in your browser only.<br>No password needed — no account required.</div>
+  </div>
+</div>
+
+<!-- COMING SOON / REGISTER MODAL -->
+<div class="modal-bg" id="csModal" style="display:none">
+  <div class="modal-box">
+    <div class="mclose" onclick="closeModal('csModal')">&#10005;</div>
+    <div class="cs-icon">&#9733;</div>
+    <h3 style="text-align:center;margin-bottom:10px">Registration opening soon!</h3>
+    <p style="text-align:center">We're onboarding colleges in waves. Drop your email and we'll notify you the moment your slot opens.</p>
+    <div class="cs-row">
+      <input class="cs-ei" type="email" placeholder="your@email.com" id="csEmail"/>
+      <button class="cs-nb" onclick="doNotify()">Notify me</button>
+    </div>
+    <div style="text-align:center;margin-top:14px">
+      <span style="font-size:12px;color:var(--t3)">Already have an account? </span>
+      <a onclick="closeModal('csModal');openLogin()" style="font-size:12px;color:var(--gl);cursor:pointer">Log in →</a>
+    </div>
+  </div>
+</div>
 
 <!-- NAVBAR -->
 <nav id="navbar">
-  <a href="#" class="logo">Campus<span>Forces</span></a>
+  <div class="logo" onclick="goHome()">Campus<span>Forces</span></div>
   <div class="nav-links">
-    <a onclick="smoothTo('contests')">Contests</a>
-    <a onclick="smoothTo('leaderboard')">Leaderboard</a>
-    <a onclick="smoothTo('features')">Features</a>
-    <a onclick="toast('Community coming soon!')">Community</a>
+    <a id="nl-home" onclick="showPage('home')">Home</a>
+    <a id="nl-contests" onclick="showPage('contests')">Contests</a>
+    <a id="nl-mycontests" onclick="requireLogin('mycontests')" style="display:none">My Contests</a>
+    <a id="nl-about" onclick="showPage('about')">About</a>
+    <a id="nl-contact" onclick="showPage('contact')">Contact</a>
   </div>
   <div class="nav-right">
-    <button class="btn-nav-ghost" onclick="toast('Login page coming soon!')">Log in</button>
-    <button class="btn-nav-primary" onclick="toast('Registration opening soon!')">Join Free</button>
+    <button class="btn-gs" id="navLoginBtn" onclick="openLogin()">Log in</button>
+    <button class="btn-gn" id="navJoinBtn" onclick="openCS()">Join Free</button>
+    <div class="upill" id="userPill" style="display:none" onclick="toggleDrop()">
+      <div class="uavatar" id="uAvatar">?</div>
+      <span class="uname-p" id="uNamePill">User</span>
+      <span class="uarrow">&#9660;</span>
+      <div class="pdrop" id="pdrop">
+        <div class="pd-hdr">
+          <div class="pd-nm" id="pdName">—</div>
+          <div class="pd-em" id="pdEmail">—</div>
+        </div>
+        <div class="pdi" onclick="navTo('mycontests')">&#9632;&nbsp; My Contests</div>
+        <div class="pdi" onclick="toast('Profile page coming soon!')">&#9671;&nbsp; My Profile</div>
+        <div class="pdi" onclick="toast('Settings coming soon!')">&#9633;&nbsp; Settings</div>
+        <div class="pdsep"></div>
+        <div class="pdi danger" onclick="doLogout()">&#10005;&nbsp; Log out</div>
+      </div>
+    </div>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ═══ HOME PAGE ═══════════════════════════════════ -->
+<div id="page-home" class="page active">
 <section id="hero">
-  <div class="hero-badge"><div class="hero-badge-dot"></div>Season 4 contest — now live</div>
+  <div class="hbadge"><div class="hdot"></div>Season 4 contest — now live</div>
   <h1>Where campus coders <em>compete</em> and grow</h1>
-  <p class="hero-sub">CampusForces is the premier competitive programming platform built for college students. Sharpen your skills, climb the leaderboard, and get hired by top companies.</p>
-  <div class="hero-btns">
-    <button class="btn-primary" onclick="smoothTo('contests')">Start competing</button>
-    <button class="btn-ghost" onclick="smoothTo('leaderboard')">View leaderboard</button>
+  <p class="hsub">CampusForces is the premier competitive programming platform for college students. Sharpen your skills, climb the leaderboard, and get hired by top companies.</p>
+  <div class="hbtns">
+    <button class="btn-p" onclick="showPage('contests')">Start competing</button>
+    <button class="btn-g" onclick="sTo('leaderboard-home')">View leaderboard</button>
   </div>
-  <div class="hero-scroll">
-    <span>scroll</span>
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="shint"><span>scroll</span>
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M6.5 2v9M3 8l3.5 3.5L10 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-wrap" aria-hidden="true">
-  <div class="marquee-track" id="mtrack">
-    <span class="marquee-item">&#9671; <b>Spring Sprint 2025</b> — Registrations open</span>
-    <span class="marquee-item">&#9651; <b>arjun_codes</b> solved Dijkstra Madness in 4:23</span>
-    <span class="marquee-item">&#9632; <b>8,000+</b> students registered</span>
-    <span class="marquee-item">&#9671; <b>Graph Theory Cup</b> — Ends in 3 days</span>
-    <span class="marquee-item">&#9651; <b>priya_dsa</b> climbed to rank #2</span>
-    <span class="marquee-item">&#9632; <b>Placement Prep Series</b> — Join now</span>
-    <span class="marquee-item">&#9671; <b>2.1 Thousand</b> problems solved</span>
-    <span class="marquee-item">&#9651; <b>Season 4</b> — New challenges every week</span>
-    <span class="marquee-item">&#9671; <b>Spring Sprint 2025</b> — Registrations open</span>
-    <span class="marquee-item">&#9651; <b>arjun_codes</b> solved Dijkstra Madness in 4:23</span>
-    <span class="marquee-item">&#9632; <b>8,000+</b> students registered</span>
-    <span class="marquee-item">&#9671; <b>Graph Theory Cup</b> — Ends in 3 days</span>
-    <span class="marquee-item">&#9651; <b>priya_dsa</b> climbed to rank #2</span>
-    <span class="marquee-item">&#9632; <b>Placement Prep Series</b> — Join now</span>
-    <span class="marquee-item">&#9671; <b>2.1 Thousand</b> problems solved</span>
-    <span class="marquee-item">&#9651; <b>Season 4</b> — New challenges every week</span>
-  </div>
-</div>
+<div class="mqwrap" aria-hidden="true"><div class="mqtrack">
+  <span class="mqi">&#9671; <b>Spring Sprint 2025</b> — Registrations open</span>
+  <span class="mqi">&#9651; <b>arjun_codes</b> solved Dijkstra Madness in 4:23</span>
+  <span class="mqi">&#9632; <b>28,000+</b> students registered</span>
+  <span class="mqi">&#9671; <b>Graph Theory Cup</b> — Ends in 3 days</span>
+  <span class="mqi">&#9651; <b>priya_dsa</b> climbed to rank #2</span>
+  <span class="mqi">&#9632; <b>Placement Prep Series</b> — Join now</span>
+  <span class="mqi">&#9671; <b>2.1 Million</b> problems solved</span>
+  <span class="mqi">&#9651; <b>Season 4</b> — New challenges every week</span>
+  <span class="mqi">&#9671; <b>Spring Sprint 2025</b> — Registrations open</span>
+  <span class="mqi">&#9651; <b>arjun_codes</b> solved Dijkstra Madness in 4:23</span>
+  <span class="mqi">&#9632; <b>28,000+</b> students registered</span>
+  <span class="mqi">&#9671; <b>Graph Theory Cup</b> — Ends in 3 days</span>
+  <span class="mqi">&#9651; <b>priya_dsa</b> climbed to rank #2</span>
+  <span class="mqi">&#9632; <b>Placement Prep Series</b> — Join now</span>
+  <span class="mqi">&#9671; <b>2.1 Million</b> problems solved</span>
+  <span class="mqi">&#9651; <b>Season 4</b> — New challenges every week</span>
+</div></div>
 
-<!-- STATS -->
 <div id="stats">
-  <div class="stat-cell">
-    <span class="stat-lbl">Registered students</span>
-    <div class="stat-val"><span id="sStudents">0</span>K+</div>
-    <span class="stat-sub">Across 30+ colleges in India</span>
-  </div>
-  <div class="stat-cell">
-    <span class="stat-lbl">Contests hosted</span>
-    <div class="stat-val"><span id="sContests">0</span>+</div>
-    <span class="stat-sub">Monthly &amp; seasonal rounds</span>
-  </div>
-  <div class="stat-cell">
-    <span class="stat-lbl">Problems solved</span>
-    <div class="stat-val"><span id="sProblems">0</span>T</div>
-    <span class="stat-sub">And growing every day</span>
-  </div>
+  <div class="sc"><span class="sc-lbl">Registered students</span><div class="sc-val"><span id="sS">0</span>K+</div><span class="sc-sub">Across 300+ colleges in India</span></div>
+  <div class="sc"><span class="sc-lbl">Contests hosted</span><div class="sc-val"><span id="sC">0</span>+</div><span class="sc-sub">Monthly &amp; seasonal rounds</span></div>
+  <div class="sc"><span class="sc-lbl">Problems solved</span><div class="sc-val"><span id="sP">0</span>M</div><span class="sc-sub">And growing every day</span></div>
+  <div class="sc"><span class="sc-lbl">Partner companies</span><div class="sc-val"><span id="sCo">0</span>+</div><span class="sc-sub">Actively hiring from us</span></div>
 </div>
 
-<!-- CONTESTS -->
-<section class="section" id="contests">
-  <div class="sec-head">
-    <span class="sec-lbl">Active contests</span>
-    <span class="sec-link" onclick="toast('All contests page coming soon!')">View all →</span>
-  </div>
-  <div class="cards-grid">
-    <div class="card" onclick="toast('Opening Spring Sprint 2025...')">
-      <div class="card-thumb ct1">
-        <div class="card-icon">&#9651;</div>
-        <div class="card-chip chip-live">Live</div>
-      </div>
-      <div class="card-body">
-        <div class="card-title">Spring Sprint 2025</div>
-        <div class="card-meta">Algorithms · Division 2 · Ends in <span id="cd1">—</span></div>
-        <div class="card-foot">
-          <span class="card-pts" id="p1">1,240 registered</span>
-          <button class="btn-reg" id="rb1" onclick="event.stopPropagation();regContest('rb1','p1')">Register</button>
-        </div>
+<section class="section">
+  <div class="sec-hd"><span class="sec-lbl">Active contests</span><span class="sec-lnk" onclick="showPage('contests')">View all →</span></div>
+  <div class="cards3">
+    <div class="card" onclick="showPage('contests')">
+      <div class="cthumb ct1"><div class="cicon">&#9651;</div><div class="chip chip-live">Live</div></div>
+      <div class="cbody"><div class="ctitle">Spring Sprint 2025</div><div class="cmeta">Algorithms · Division 2 · Ends in <span id="cd1">—</span></div>
+        <div class="cfoot"><span class="cpts" id="cp1">1,240 registered</span><button class="btn-reg" id="rb1" onclick="event.stopPropagation();regContest('rb1','cp1','Spring Sprint 2025','Algorithms · Division 2','live')">Register</button></div>
       </div>
     </div>
-    <div class="card" onclick="toast('Opening Graph Theory Cup...')">
-      <div class="card-thumb ct2">
-        <div class="card-icon">&#9671;</div>
-        <div class="card-chip chip-open">Open</div>
-      </div>
-      <div class="card-body">
-        <div class="card-title">Graph Theory Cup</div>
-        <div class="card-meta">Data Structures · Division 1 · Open enrollment</div>
-        <div class="card-foot">
-          <span class="card-pts" id="p2">876 registered</span>
-          <button class="btn-reg" id="rb2" onclick="event.stopPropagation();regContest('rb2','p2')">Register</button>
-        </div>
+    <div class="card" onclick="showPage('contests')">
+      <div class="cthumb ct2"><div class="cicon">&#9671;</div><div class="chip chip-open">Open</div></div>
+      <div class="cbody"><div class="ctitle">Graph Theory Cup</div><div class="cmeta">Data Structures · Division 1 · Open enrollment</div>
+        <div class="cfoot"><span class="cpts" id="cp2">876 registered</span><button class="btn-reg" id="rb2" onclick="event.stopPropagation();regContest('rb2','cp2','Graph Theory Cup','Data Structures · Division 1','open')">Register</button></div>
       </div>
     </div>
-    <div class="card" onclick="toast('Opening Placement Prep Series...')">
-      <div class="card-thumb ct3">
-        <div class="card-icon">&#9632;</div>
-        <div class="card-chip chip-on">Ongoing</div>
-      </div>
-      <div class="card-body">
-        <div class="card-title">Placement Prep Series</div>
-        <div class="card-meta">Mixed · All divisions · Ongoing practice</div>
-        <div class="card-foot">
-          <span class="card-pts" id="p3">3,410 registered</span>
-          <button class="btn-reg" id="rb3" onclick="event.stopPropagation();regContest('rb3','p3')">Join</button>
-        </div>
+    <div class="card" onclick="showPage('contests')">
+      <div class="cthumb ct3"><div class="cicon">&#9632;</div><div class="chip chip-on">Ongoing</div></div>
+      <div class="cbody"><div class="ctitle">Placement Prep Series</div><div class="cmeta">Mixed · All divisions · Ongoing practice</div>
+        <div class="cfoot"><span class="cpts" id="cp3">3,410 registered</span><button class="btn-reg" id="rb3" onclick="event.stopPropagation();regContest('rb3','cp3','Placement Prep Series','Mixed · All divisions','ongoing')">Join</button></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="section" id="features" style="padding-top:0">
-  <div class="sec-head"><span class="sec-lbl">Why CampusForces</span></div>
+<section class="section" style="padding-top:0">
+  <div class="sec-hd"><span class="sec-lbl">How it works</span></div>
+  <div class="steps-grid">
+    <div class="step"><div class="step-num">01</div><div class="step-ico">&#9632;</div><div class="step-title">Sign up free</div><div class="step-desc">Create your CampusForces account with your college email in under 60 seconds.</div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-ico">&#9651;</div><div class="step-title">Join a contest</div><div class="step-desc">Pick from live, upcoming, or practice contests suited to your skill level.</div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-ico">&#9671;</div><div class="step-title">Solve &amp; submit</div><div class="step-desc">Write code, get instant verdicts, climb the real-time leaderboard.</div></div>
+    <div class="step"><div class="step-num">04</div><div class="step-ico">&#9670;</div><div class="step-title">Get hired</div><div class="step-desc">Top rankers get direct visibility with our 40+ recruiting partners.</div></div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="sec-hd"><span class="sec-lbl">Why CampusForces</span></div>
   <div class="feat-grid">
-    <div class="feat-card">
-      <div class="feat-icon">&#9651;</div>
-      <div class="feat-title">Real contest experience</div>
-      <div class="feat-desc">Compete in timed rounds that mirror ICPC, Codeforces, and top company hiring challenges. Pressure-test your skills before it counts.</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">&#9670;</div>
-      <div class="feat-title">College leaderboards</div>
-      <div class="feat-desc">Rank not just globally but within your own campus — see who's the best coder at your college and challenge them directly.</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">&#9632;</div>
-      <div class="feat-title">Recruiter visibility</div>
-      <div class="feat-desc">Top performers are seen by our 40+ partner companies. Your CampusForces rank is your most honest résumé.</div>
-    </div>
+    <div class="feat"><div class="feat-ico">&#9651;</div><div class="feat-title">Real contest experience</div><div class="feat-desc">Timed rounds that mirror ICPC, Codeforces, and top company hiring challenges. Pressure-test your skills before it counts.</div></div>
+    <div class="feat"><div class="feat-ico">&#9670;</div><div class="feat-title">College leaderboards</div><div class="feat-desc">Rank globally and within your own campus. See who's the best coder at your college and challenge them directly.</div></div>
+    <div class="feat"><div class="feat-ico">&#9632;</div><div class="feat-title">Recruiter visibility</div><div class="feat-desc">Top performers are seen by our 40+ partner companies. Your CampusForces rank is your most honest résumé.</div></div>
+    <div class="feat"><div class="feat-ico">&#9671;</div><div class="feat-title">Instant verdicts</div><div class="feat-desc">Sub-second code evaluation across 12 languages. See your result the moment you submit.</div></div>
+    <div class="feat"><div class="feat-ico">&#9633;</div><div class="feat-title">Detailed analytics</div><div class="feat-desc">Track your performance over time — accuracy, speed, problem categories, and rating history.</div></div>
+    <div class="feat"><div class="feat-ico">&#9651;</div><div class="feat-title">Editorial solutions</div><div class="feat-desc">Every problem comes with a detailed editorial after the contest — learn, not just compete.</div></div>
   </div>
 </section>
 
-<!-- LEADERBOARD -->
-<section class="section" id="leaderboard" style="padding-top:0">
-  <div class="sec-head">
-    <span class="sec-lbl">Top rankers this week</span>
-    <span class="sec-link" onclick="toast('Full leaderboard loading...')">Full leaderboard →</span>
-  </div>
-  <div class="lb-wrap">
-    <table class="lb-table">
-      <thead>
-        <tr>
-          <th>#</th><th>Coder</th>
-          <th style="text-align:right">Score</th>
-          <th style="text-align:right">Solved</th>
-          <th style="text-align:right">Change</th>
-        </tr>
-      </thead>
-      <tbody id="lbBody"></tbody>
-    </table>
+<section class="section" id="leaderboard-home" style="padding-top:0">
+  <div class="sec-hd"><span class="sec-lbl">Top rankers this week</span><span class="sec-lnk" onclick="showPage('contests')">Full leaderboard →</span></div>
+  <div class="lb-wrap"><table class="lb-table"><thead><tr><th>#</th><th>Coder</th><th style="text-align:right">Score</th><th style="text-align:right">Solved</th><th style="text-align:right">Change</th></tr></thead><tbody id="lbBody"></tbody></table></div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="sec-hd"><span class="sec-lbl">What coders say</span></div>
+  <div class="testi-grid">
+    <div class="testi"><div class="testi-q">"CampusForces is the reason I landed at Google. The contest pressure taught me to think fast and code clean."</div><div class="testi-au"><div class="tav ta1">AK</div><div><div class="testi-nm">Arjun Kumar</div><div class="testi-co">IIT Bombay · Rank #1</div></div></div></div>
+    <div class="testi"><div class="testi-q">"I went from struggling with arrays to solving graph problems in 2 months. The editorials are gold."</div><div class="testi-au"><div class="tav ta2">PS</div><div><div class="testi-nm">Priya Sharma</div><div class="testi-co">NIT Trichy · Rank #2</div></div></div></div>
+    <div class="testi"><div class="testi-q">"The college leaderboard made things personal. Competing with my own batchmates pushed me 10x harder."</div><div class="testi-au"><div class="tav ta3">RM</div><div><div class="testi-nm">Rohit Mehta</div><div class="testi-co">BITS Pilani · Rank #5</div></div></div></div>
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">Campus<span>Forces</span></div>
-  <div class="footer-links">
-    <a onclick="toast('About page')">About</a>
-    <a onclick="smoothTo('contests')">Contests</a>
-    <a onclick="toast('Privacy policy')">Privacy</a>
-    <a onclick="toast('Terms of service')">Terms</a>
-    <a onclick="toast('Contact us')">Contact</a>
+<section class="section" style="padding-top:0">
+  <div class="sec-hd"><span class="sec-lbl">Top companies hiring from us</span></div>
+  <div class="companies">
+    <div class="co-chip">Google</div><div class="co-chip">Microsoft</div><div class="co-chip">Amazon</div><div class="co-chip">Flipkart</div><div class="co-chip">Zomato</div><div class="co-chip">Razorpay</div><div class="co-chip">Atlassian</div><div class="co-chip">Uber</div><div class="co-chip">PhonePe</div><div class="co-chip">Meesho</div><div class="co-chip">Swiggy</div><div class="co-chip">Adobe</div>
   </div>
-  <div class="footer-copy">&copy; 2025 CampusForces. All rights reserved.</div>
-</footer>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="sec-hd"><span class="sec-lbl">From the blog</span><span class="sec-lnk" onclick="toast('Blog coming soon!')">Read all →</span></div>
+  <div class="blog-grid">
+    <div class="blog-card" onclick="toast('Opening article...')"><div class="blog-thumb bt1">&#9651;</div><div class="blog-body"><div class="blog-tag">Algorithms</div><div class="blog-title">How to master Dynamic Programming in 30 days</div><div class="blog-meta">May 10, 2025 · 8 min read</div></div></div>
+    <div class="blog-card" onclick="toast('Opening article...')"><div class="blog-thumb bt2">&#9671;</div><div class="blog-body"><div class="blog-tag">Career</div><div class="blog-title">From rank 500 to Google — Arjun's story</div><div class="blog-meta">May 6, 2025 · 5 min read</div></div></div>
+    <div class="blog-card" onclick="toast('Opening article...')"><div class="blog-thumb bt3">&#9632;</div><div class="blog-body"><div class="blog-tag">Tips</div><div class="blog-title">10 contest strategies that top coders swear by</div><div class="blog-meta">Apr 28, 2025 · 6 min read</div></div></div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="cta-banner">
+    <h2>Ready to prove yourself <em>on campus?</em></h2>
+    <div class="cta-r">
+      <button class="btn-p" onclick="openCS()">Join CampusForces free</button>
+      <span class="cta-note">No credit card · Takes 60 seconds</span>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══ CONTESTS PAGE ════════════════════════════════ -->
+<div id="page-contests" class="page">
+<div class="subpage">
+  <h2>All <em>contests</em></h2>
+  <p class="lead">From beginner practice rounds to Division 1 championships — find your level and start competing today.</p>
+  <div class="sec-hd" style="margin-bottom:20px"><span class="sec-lbl">Live now</span></div>
+  <div class="cards3" style="margin-bottom:40px">
+    <div class="card"><div class="cthumb ct1"><div class="cicon">&#9651;</div><div class="chip chip-live">Live</div></div><div class="cbody"><div class="ctitle">Spring Sprint 2025</div><div class="cmeta">Algorithms · Div 2 · Ends <span id="cd1b">—</span></div><div class="cfoot"><span class="cpts" id="cp1b">1,240 registered</span><button class="btn-reg" id="rb1b" onclick="regContest('rb1b','cp1b','Spring Sprint 2025','Algorithms · Division 2','live')">Register</button></div></div></div>
+    <div class="card"><div class="cthumb ct4"><div class="cicon">&#9670;</div><div class="chip chip-live">Live</div></div><div class="cbody"><div class="ctitle">Binary Blitz #12</div><div class="cmeta">Bit Manipulation · Div 3 · Ends in 6h</div><div class="cfoot"><span class="cpts" id="cp4">389 registered</span><button class="btn-reg" id="rb4" onclick="regContest('rb4','cp4','Binary Blitz #12','Bit Manipulation · Div 3','live')">Register</button></div></div></div>
+    <div class="card"><div class="cthumb ct5"><div class="cicon">&#9632;</div><div class="chip chip-live">Live</div></div><div class="cbody"><div class="ctitle">Recursion Royale</div><div class="cmeta">Recursion · All levels · Ends in 11h</div><div class="cfoot"><span class="cpts" id="cp5">702 registered</span><button class="btn-reg" id="rb5" onclick="regContest('rb5','cp5','Recursion Royale','Recursion · All levels','live')">Register</button></div></div></div>
+  </div>
+  <div class="sec-hd" style="margin-bottom:20px"><span class="sec-lbl">Upcoming</span></div>
+  <div class="cards4" style="margin-bottom:40px">
+    <div class="card"><div class="cthumb ct2"><div class="cicon">&#9671;</div><div class="chip chip-open">Open</div></div><div class="cbody"><div class="ctitle">Graph Theory Cup</div><div class="cmeta">Data Structures · Div 1</div><div class="cfoot"><span class="cpts" id="cp2b">876 registered</span><button class="btn-reg" id="rb2b" onclick="regContest('rb2b','cp2b','Graph Theory Cup','Data Structures · Div 1','open')">Register</button></div></div></div>
+    <div class="card"><div class="cthumb ct6"><div class="cicon">&#9651;</div><div class="chip chip-open">Open</div></div><div class="cbody"><div class="ctitle">DP Marathon</div><div class="cmeta">Dynamic Programming · Div 2</div><div class="cfoot"><span class="cpts" id="cp6">541 registered</span><button class="btn-reg" id="rb6" onclick="regContest('rb6','cp6','DP Marathon','Dynamic Programming · Div 2','open')">Register</button></div></div></div>
+    <div class="card"><div class="cthumb ct1"><div class="cicon">&#9670;</div><div class="chip chip-open">Open</div></div><div class="cbody"><div class="ctitle">Greedy Gauntlet</div><div class="cmeta">Greedy · Div 3</div><div class="cfoot"><span class="cpts" id="cp7">228 registered</span><button class="btn-reg" id="rb7" onclick="regContest('rb7','cp7','Greedy Gauntlet','Greedy · Div 3','open')">Register</button></div></div></div>
+    <div class="card"><div class="cthumb ct3"><div class="cicon">&#9632;</div><div class="chip chip-soon">Soon</div></div><div class="cbody"><div class="ctitle">Season 5 Grand Prix</div><div class="cmeta">All topics · Div 1 · Aug 2025</div><div class="cfoot"><span class="cpts">Coming soon</span><button class="btn-reg" onclick="openCS()">Notify me</button></div></div></div>
+  </div>
+  <div class="sec-hd" style="margin-bottom:20px"><span class="sec-lbl">Practice &amp; ongoing</span></div>
+  <div class="cards3">
+    <div class="card"><div class="cthumb ct3"><div class="cicon">&#9632;</div><div class="chip chip-on">Ongoing</div></div><div class="cbody"><div class="ctitle">Placement Prep Series</div><div class="cmeta">Mixed · All divisions</div><div class="cfoot"><span class="cpts" id="cp3b">3,410 registered</span><button class="btn-reg" id="rb3b" onclick="regContest('rb3b','cp3b','Placement Prep Series','Mixed · All divisions','ongoing')">Join</button></div></div></div>
+    <div class="card"><div class="cthumb ct4"><div class="cicon">&#9671;</div><div class="chip chip-on">Ongoing</div></div><div class="cbody"><div class="ctitle">Daily 3 Challenge</div><div class="cmeta">3 problems · Every day · All levels</div><div class="cfoot"><span class="cpts" id="cp8">5,820 registered</span><button class="btn-reg" id="rb8" onclick="regContest('rb8','cp8','Daily 3 Challenge','3 problems · Every day','ongoing')">Join</button></div></div></div>
+    <div class="card"><div class="cthumb ct6"><div class="cicon">&#9651;</div><div class="chip chip-on">Ongoing</div></div><div class="cbody"><div class="ctitle">Beginner Bootcamp</div><div class="cmeta">Beginner friendly · Self-paced</div><div class="cfoot"><span class="cpts" id="cp9">2,100 registered</span><button class="btn-reg" id="rb9" onclick="regContest('rb9','cp9','Beginner Bootcamp','Beginner friendly · Self-paced','ongoing')">Join</button></div></div></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ MY CONTESTS PAGE ════════════════════════════ -->
+<div id="page-mycontests" class="page">
+<div class="myc-section">
+  <div class="myc-hero">
+    <h2>My <em>contests</em></h2>
+    <p>All the contests you've registered for — view status or withdraw anytime.</p>
+  </div>
+  <div id="myContestsList"></div>
+</div>
+</div>
+
+<!-- ═══ ABOUT PAGE ══════════════════════════════════ -->
+<div id="page-about" class="page">
+<div class="subpage">
+  <h2>About <em>CampusForces</em></h2>
+  <p class="lead">We're on a mission to make every college student in India a world-class programmer — one contest at a time.</p>
+  <div class="sp-grid">
+    <div class="sp-card"><div class="sp-ico">&#9651;</div><div class="sp-title">Our mission</div><div class="sp-desc">Democratize access to competitive programming for every college student — not just IITs and NITs.</div></div>
+    <div class="sp-card"><div class="sp-ico">&#9671;</div><div class="sp-title">Our vision</div><div class="sp-desc">A future where a student from any college in India can compete, grow, and get hired by their dream company.</div></div>
+    <div class="sp-card"><div class="sp-ico">&#9632;</div><div class="sp-title">Our values</div><div class="sp-desc">Meritocracy, transparency, and relentless improvement. Your rank is earned — not bought.</div></div>
+  </div>
+  <h3>Our story</h3>
+  <p>CampusForces was born in 2022 inside a hostel room at DTU Delhi, when four friends noticed a painful gap: competitive programming was either inaccessible or intimidating for most students outside the top 10 institutes.</p>
+  <p>We built the first version in 6 weeks, ran our first contest with 80 participants, and haven't stopped since. Today, over 28,000 students across 300+ colleges compete on CampusForces every month.</p>
+  <h3>The team</h3>
+  <div class="team-grid">
+    <div class="team-card"><div class="team-av ta-g">RK</div><div class="team-nm">Rahul Kumar</div><div class="team-role">Co-founder &amp; CEO</div></div>
+    <div class="team-card"><div class="team-av ta-b">SS</div><div class="team-nm">Sneha Singh</div><div class="team-role">Co-founder &amp; CTO</div></div>
+    <div class="team-card"><div class="team-av ta-a">AM</div><div class="team-nm">Aman Mehta</div><div class="team-role">Head of Product</div></div>
+    <div class="team-card"><div class="team-av ta-r">PG</div><div class="team-nm">Priya Gupta</div><div class="team-role">Head of Community</div></div>
+  </div>
+  <div class="sp-grid">
+    <div class="sp-card"><div class="sp-title" style="font-size:32px;font-weight:800;color:var(--gl)">28K+</div><div class="sp-desc">Registered students across India</div></div>
+    <div class="sp-card"><div class="sp-title" style="font-size:32px;font-weight:800;color:var(--gl)">180+</div><div class="sp-desc">Contests hosted since 2022</div></div>
+    <div class="sp-card"><div class="sp-title" style="font-size:32px;font-weight:800;color:var(--gl)">40+</div><div class="sp-desc">Companies actively hiring from us</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ PRIVACY PAGE ════════════════════════════════ -->
+<div id="page-privacy" class="page">
+<div class="subpage" style="max-width:760px">
+  <h2>Privacy <em>policy</em></h2>
+  <p class="lead">Last updated: May 2025. We keep this simple and honest.</p>
+  <h3>What we collect</h3>
+  <p>When you register, we collect your name, email address, and college name. During contests, we collect your code submissions and performance data to calculate your rank.</p>
+  <ul><li>Account information (name, email, college)</li><li>Contest submissions and scores</li><li>Usage data (pages visited, time spent) — anonymized</li><li>Cookie data only if you accept our cookie prompt</li></ul>
+  <h3>What we never do</h3>
+  <ul><li>We never sell your data to third parties</li><li>We never share your code with companies without your consent</li><li>We never store your payment information (we use Razorpay)</li></ul>
+  <h3>Cookies</h3>
+  <p>We use a single session cookie to keep you logged in, and an analytics cookie (if accepted) to understand aggregate site usage. You can reject the analytics cookie at any time.</p>
+  <h3>Your rights</h3>
+  <p>You can request a copy of your data, ask us to delete your account, or opt out of any marketing at any time by emailing <span style="color:var(--gl)">privacy@campusforces.in</span>.</p>
+</div>
+</div>
+
+<!-- ═══ TERMS PAGE ═══════════════════════════════════ -->
+<div id="page-terms" class="page">
+<div class="subpage" style="max-width:760px">
+  <h2>Terms of <em>service</em></h2>
+  <p class="lead">Last updated: May 2025. By using CampusForces, you agree to these terms.</p>
+  <h3>Eligibility</h3>
+  <p>CampusForces is open to students currently enrolled in any recognised college or university. You must be at least 16 years old to register.</p>
+  <h3>Contest rules</h3>
+  <ul><li>You may not share your code with other participants during a live contest</li><li>You may not use AI tools to generate solutions during rated contests</li><li>Plagiarism detection runs on all submissions — repeated violations result in a permanent ban</li></ul>
+  <h3>Account</h3>
+  <p>You are responsible for keeping your login credentials secure. One person may not operate multiple accounts.</p>
+  <h3>Termination</h3>
+  <p>We reserve the right to suspend or terminate any account that violates these terms, with or without prior notice.</p>
+</div>
+</div>
+
+<!-- ═══ CONTACT PAGE ════════════════════════════════ -->
+<div id="page-contact" class="page">
+<div class="subpage">
+  <h2>Get in <em>touch</em></h2>
+  <p class="lead">Have a question, feedback, or want to partner with us? We're always listening.</p>
+  <div class="contact-grid">
+    <div class="contact-card"><div class="contact-ico">&#9993;</div><div class="contact-lbl">General enquiries</div><div class="contact-val">hello@campusforces.in</div></div>
+    <div class="contact-card"><div class="contact-ico">&#9993;</div><div class="contact-lbl">Partnerships &amp; hiring</div><div class="contact-val">partners@campusforces.in</div></div>
+    <div class="contact-card"><div class="contact-ico">&#9993;</div><div class="contact-lbl">Bug reports &amp; support</div><div class="contact-val">support@campusforces.in</div></div>
+    <div class="contact-card"><div class="contact-ico">&#128205;</div><div class="contact-lbl">Office</div><div class="contact-val">NSIT Delhi — 110078</div></div>
+  </div>
+  <h3>Send us a message</h3>
+  <div class="cf-form">
+    <div class="cf-row">
+      <input class="cf-input" type="text" placeholder="Your name" id="cfName"/>
+      <input class="cf-input" type="email" placeholder="Your email" id="cfEmail"/>
+    </div>
+    <input class="cf-input" type="text" placeholder="Subject" id="cfSubject"/>
+    <textarea class="cf-input" placeholder="Your message..." id="cfMsg"></textarea>
+    <button class="cf-submit" onclick="submitContact()">Send message</button>
+  </div>
+  <h3 style="margin-top:48px">Frequently asked questions</h3>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is CampusForces free to use?<span>+</span></div><div class="faq-a">Yes — 100% free for students. We monetise through our recruiter partnerships, not through students.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which programming languages are supported?<span>+</span></div><div class="faq-a">C, C++, Java, Python 3, JavaScript, Go, Rust, Kotlin, Swift, Ruby, PHP, and Haskell.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How is my rating calculated?<span>+</span></div><div class="faq-a">We use an ELO-based system similar to Codeforces — your rating rises when you outperform expectations and falls when you underperform.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I report a problem error?<span>+</span></div><div class="faq-a">Use the "Report issue" button inside the contest interface. Problem errors are reviewed within 30 minutes during live contests.</div></div>
+  </div>
+</div>
+</div>
 
 <!-- VISITOR BAR -->
 <div id="vBar">
-  <div class="vb-pill" id="vPill">
-    <div class="vb-dot" id="vDot"></div>
-    <span id="vTxt">Online</span>
-  </div>
-  <div class="vb-sep"></div>
-  <div class="vb-stat"><span class="vb-lbl">Today</span><span class="vb-num" id="vToday">341</span></div>
-  <div class="vb-sep"></div>
-  <div class="vb-stat"><span class="vb-lbl">Total</span><span class="vb-num" id="vTotal">12,940</span></div>
-  <div class="vb-sep"></div>
-  <div class="vb-clock"><span class="vb-time" id="vClock">00:00:00</span><span class="vb-tz" id="vTz">IST</span></div>
-  <div class="vb-sep"></div>
-  <div class="vb-ping"><div class="ping-dot"></div><span id="vPing">just now</span></div>
+  <div class="vbpill" id="vPill"><div class="vbdot" id="vDot"></div><span id="vTxt">Online</span></div>
+  <div class="vbsep"></div>
+  <div class="vbstat"><span class="vblbl">Today</span><span class="vbnum" id="vToday">341</span></div>
+  <div class="vbsep"></div>
+  <div class="vbstat"><span class="vblbl">Total</span><span class="vbnum" id="vTotal">12,940</span></div>
+  <div class="vbsep"></div>
+  <div class="vbclock"><span class="vbtime" id="vClock">00:00:00</span><span class="vbtz" id="vTz">IST</span></div>
+  <div class="vbsep"></div>
+  <div class="vbping"><div class="pingdot"></div><span id="vPing">just now</span></div>
 </div>
 
+<!-- FOOTER -->
+<footer id="mainFooter">
+  <div class="ft">
+    <div class="fb">
+      <div class="logo" onclick="goHome()" style="font-size:18px">Campus<span>Forces</span></div>
+      <p>The premier competitive programming platform for college students in India. Compete, grow, and get hired.</p>
+    </div>
+    <div><div class="fc-t">Platform</div><div class="fc"><a onclick="showPage('contests')">Contests</a><a onclick="sTo('leaderboard-home');showPage('home')">Leaderboard</a><a onclick="toast('Practice arena coming soon!')">Practice</a><a onclick="toast('Blog coming soon!')">Blog</a></div></div>
+    <div><div class="fc-t">Company</div><div class="fc"><a onclick="showPage('about')">About us</a><a onclick="showPage('contact')">Contact</a><a onclick="toast('Careers coming soon!')">Careers</a><a onclick="toast('Press kit coming soon!')">Press</a></div></div>
+    <div><div class="fc-t">Legal</div><div class="fc"><a onclick="showPage('privacy')">Privacy policy</a><a onclick="showPage('terms')">Terms of service</a><a onclick="toast('Cookie settings')">Cookie settings</a></div></div>
+  </div>
+  <div class="fb2">
+    <span class="fcopy">&copy; 2025 CampusForces. All rights reserved.</span>
+    <div class="fsoc">
+      <div class="soc" onclick="toast('Twitter/X')">&#120143;</div>
+      <div class="soc" onclick="toast('LinkedIn')">in</div>
+      <div class="soc" onclick="toast('Discord')">&#9670;</div>
+      <div class="soc" onclick="toast('GitHub')">&#9632;</div>
+    </div>
+  </div>
+</footer>
+
 <script>
-/* ─── TOAST ──────────────────────────────── */
+var OWNER_STATUS=window.OWNER_STATUS||'online';
+
+/* ═══ LOCALSTORAGE KEYS ══════════════════════════ */
+var LS_USER='cf_user';
+var LS_CONTESTS='cf_my_contests';
+
+/* ═══ TOAST ══════════════════════════════════════ */
 var _tt;
 function toast(msg){
   var el=document.getElementById('toast');
@@ -398,87 +734,362 @@ function toast(msg){
   clearTimeout(_tt);_tt=setTimeout(function(){el.classList.remove('show')},2800);
 }
 
-/* ─── SMOOTH SCROLL ──────────────────────── */
-function smoothTo(id){
-  var el=document.getElementById(id);
-  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+/* ═══ PAGE SYSTEM ════════════════════════════════ */
+var allPages=['home','contests','mycontests','about','privacy','terms','contact'];
+function showPage(id){
+  allPages.forEach(function(p){
+    var pg=document.getElementById('page-'+p);
+    if(pg)pg.classList.remove('active');
+    var nl=document.getElementById('nl-'+p);
+    if(nl)nl.classList.remove('act');
+  });
+  var pg=document.getElementById('page-'+id);
+  if(pg)pg.classList.add('active');
+  var nl=document.getElementById('nl-'+id);
+  if(nl)nl.classList.add('act');
+  window.scrollTo({top:0,behavior:'smooth'});
+  closeDrop();
+  if(id==='mycontests')renderMyContests();
 }
+function goHome(){showPage('home');}
+function navTo(id){showPage(id);closeDrop();}
+function requireLogin(id){
+  if(getUser()){showPage(id);}
+  else{toast('Please log in first.');openLogin();}
+}
+function sTo(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
 
-/* ─── COOKIE CONSENT ─────────────────────── */
-function showConsent(){
-  var m=document.getElementById('cookieModal');
+/* ═══ NAVBAR SCROLL ══════════════════════════════ */
+window.addEventListener('scroll',function(){
+  document.getElementById('navbar').style.background=window.scrollY>60?'rgba(8,8,15,.98)':'rgba(8,8,15,.88)';
+},{passive:true});
+
+/* ═══ MODALS ══════════════════════════════════════ */
+function openModal(id){
+  var m=document.getElementById(id);
   m.style.display='flex';
-  requestAnimationFrame(function(){requestAnimationFrame(function(){m.classList.add('show')})});
+  requestAnimationFrame(function(){requestAnimationFrame(function(){m.classList.add('show')});});
   document.body.style.overflow='hidden';
 }
-function hideConsent(){
-  var m=document.getElementById('cookieModal');
+function closeModal(id){
+  var m=document.getElementById(id);
   m.classList.remove('show');
-  setTimeout(function(){m.style.display='none'},380);
+  setTimeout(function(){m.style.display='none';},380);
   document.body.style.overflow='';
 }
-function acceptCookies(){hideConsent();startBar();}
-function rejectCookies(){hideConsent();toast('No tracking — browsing freely.');}
-document.getElementById('cookieModal').style.display='none';
-setTimeout(showConsent,1400);
+document.querySelectorAll('.modal-bg').forEach(function(m){
+  m.addEventListener('click',function(e){if(e.target===m)closeModal(m.id);});
+});
+function openCS(){openModal('csModal');}
 
-/* ─── VISITOR BAR ────────────────────────── */
-var todayCount=341,totalCount=12940,secSince=0;
+/* ═══ COOKIE ══════════════════════════════════════ */
+function acceptCookies(){closeModal('cookieModal');startBar();}
+function rejectCookies(){closeModal('cookieModal');toast('No tracking — browsing freely.');}
+setTimeout(function(){openModal('cookieModal');},1400);
+
+/* ═══ LOCALSTORAGE USER ══════════════════════════ */
+function getUser(){
+  try{var u=localStorage.getItem(LS_USER);return u?JSON.parse(u):null;}catch(e){return null;}
+}
+function saveUser(obj){
+  try{localStorage.setItem(LS_USER,JSON.stringify(obj));}catch(e){}
+}
+function clearUser(){
+  try{localStorage.removeItem(LS_USER);}catch(e){}
+}
+function getInitials(name){
+  var parts=name.trim().split(' ').filter(Boolean);
+  if(parts.length>=2)return (parts[0][0]+parts[1][0]).toUpperCase();
+  return name.slice(0,2).toUpperCase();
+}
+
+/* ═══ AUTH UI UPDATE ═════════════════════════════ */
+function updateNavForUser(user){
+  if(user){
+    document.getElementById('navLoginBtn').style.display='none';
+    document.getElementById('navJoinBtn').style.display='none';
+    document.getElementById('userPill').style.display='flex';
+    document.getElementById('nl-mycontests').style.display='';
+    var ini=getInitials(user.name);
+    document.getElementById('uAvatar').textContent=ini;
+    document.getElementById('uNamePill').textContent=user.name.split(' ')[0];
+    document.getElementById('pdName').textContent=user.name;
+    document.getElementById('pdEmail').textContent=user.college?user.email+' · '+user.college:user.email;
+  } else {
+    document.getElementById('navLoginBtn').style.display='';
+    document.getElementById('navJoinBtn').style.display='';
+    document.getElementById('userPill').style.display='none';
+    document.getElementById('nl-mycontests').style.display='none';
+  }
+}
+
+/* ═══ PROFILE DROPDOWN ════════════════════════════ */
+function toggleDrop(){
+  var d=document.getElementById('pdrop');
+  d.classList.toggle('open');
+}
+function closeDrop(){
+  document.getElementById('pdrop').classList.remove('open');
+}
+document.addEventListener('click',function(e){
+  var pill=document.getElementById('userPill');
+  if(pill&&!pill.contains(e.target))closeDrop();
+});
+
+/* ═══ OPEN LOGIN — pre-fill returning user ════════ */
+function openLogin(){
+  openModal('loginModal');
+  /* check if a user is already saved */
+  var saved=getUser();
+  var retBanner=document.getElementById('liReturning');
+  var retDivider=document.getElementById('liDivider');
+  if(saved){
+    document.getElementById('liRetAvatar').textContent=getInitials(saved.name);
+    document.getElementById('liRetName').textContent=saved.name;
+    document.getElementById('liRetEmail').textContent=saved.email+(saved.college?' · '+saved.college:'');
+    retBanner.style.display='flex';
+    retDivider.style.display='block';
+    /* pre-fill fields too */
+    document.getElementById('liName').value=saved.name;
+    document.getElementById('liEmail').value=saved.email;
+    document.getElementById('liCollege').value=saved.college||'';
+  }else{
+    retBanner.style.display='none';
+    retDivider.style.display='none';
+    document.getElementById('liName').value='';
+    document.getElementById('liEmail').value='';
+    document.getElementById('liCollege').value='';
+  }
+  document.getElementById('liErr').textContent='';
+}
+
+/* ═══ QUICK LOGIN — one-click for returning user ═ */
+function quickLogin(){
+  var saved=getUser();
+  if(!saved)return;
+  updateNavForUser(saved);
+  closeModal('loginModal');
+  toast('Welcome back, '+saved.name.split(' ')[0]+'! 👋');
+}
+
+/* ═══ MAIN LOGIN — name + email only, no password ═ */
+function doLogin(){
+  var name=document.getElementById('liName').value.trim();
+  var email=document.getElementById('liEmail').value.trim();
+  var college=document.getElementById('liCollege').value.trim();
+  var err=document.getElementById('liErr');
+
+  if(!name){
+    err.textContent='Please enter your name.';err.classList.add('show');
+    document.getElementById('liName').focus();return;
+  }
+  if(!email||!email.includes('@')||!email.includes('.')){
+    err.textContent='Please enter a valid email address.';err.classList.add('show');
+    document.getElementById('liEmail').focus();return;
+  }
+  err.classList.remove('show');
+
+  var user={name:name,email:email,college:college,joinedAt:new Date().toISOString()};
+  saveUser(user);
+
+  /* also save in accounts list so returning banner works next time */
+  try{
+    var all=JSON.parse(localStorage.getItem('cf_accounts')||'[]');
+    var idx=all.findIndex(function(u){return u.email===email;});
+    if(idx>=0)all[idx]=user; else all.push(user);
+    localStorage.setItem('cf_accounts',JSON.stringify(all));
+  }catch(e){}
+
+  updateNavForUser(user);
+  closeModal('loginModal');
+
+  var isNew=!getUser()||Date.now()-new Date(user.joinedAt).getTime()<3000;
+  toast('Welcome'+(isNew?' to CampusForces':' back')+', '+name.split(' ')[0]+'! 👋');
+
+  document.getElementById('liName').value='';
+  document.getElementById('liEmail').value='';
+  document.getElementById('liCollege').value='';
+}
+
+/* ═══ DUMMY — kept so nothing breaks ═════════════ */
+function switchTab(){}
+function doSignup(){doLogin();}
+
+/* ═══ LOGOUT ════════════════════════════════════════ */
+function doLogout(){
+  clearUser();
+  updateNavForUser(null);
+  closeDrop();
+  showPage('home');
+  toast('Logged out. See you soon!');
+}
+
+/* ═══ COMING SOON NOTIFY ══════════════════════════ */
+function doNotify(){
+  var e=document.getElementById('csEmail').value.trim();
+  if(!e||!e.includes('@')){toast('Please enter a valid email.');return;}
+  toast('You\'re on the list! We\'ll notify you soon. \uD83C\uDF89');
+  closeModal('csModal');
+  document.getElementById('csEmail').value='';
+}
+
+/* ═══ MY CONTESTS LOCALSTORAGE ════════════════════ */
+function getMyContests(){
+  try{var v=localStorage.getItem(LS_CONTESTS);return v?JSON.parse(v):[];}catch(e){return[];}
+}
+function saveMyContests(arr){
+  try{localStorage.setItem(LS_CONTESTS,JSON.stringify(arr));}catch(e){}
+}
+function isRegistered(id){
+  return getMyContests().some(function(c){return c.id===id;});
+}
+function addContest(id,name,meta,status){
+  var arr=getMyContests();
+  if(!arr.some(function(c){return c.id===id;})){
+    arr.push({id:id,name:name,meta:meta,status:status,registeredAt:new Date().toISOString()});
+    saveMyContests(arr);
+  }
+}
+function removeContest(id){
+  var arr=getMyContests().filter(function(c){return c.id!==id;});
+  saveMyContests(arr);
+}
+
+/* ═══ CONTEST REGISTRATION ════════════════════════ */
+function regContest(btnId,ptId,name,meta,status){
+  if(!getUser()){toast('Please log in to register for contests.');openLogin();return;}
+  if(isRegistered(btnId)){toast('Already registered!');return;}
+  addContest(btnId,name,meta,status);
+  var btn=document.getElementById(btnId);
+  if(btn){btn.textContent='Registered \u2713';btn.className='btn-reg done';}
+  var el=document.getElementById(ptId);
+  if(el){var cur=parseInt(el.textContent.replace(/\D/g,''))||0;el.textContent=(cur+1).toLocaleString()+' registered';}
+  toast('Registered for '+name+'! \uD83C\uDF89');
+}
+
+/* ═══ MY CONTESTS PAGE RENDER ═════════════════════ */
+function renderMyContests(){
+  var container=document.getElementById('myContestsList');
+  if(!container)return;
+  var user=getUser();
+  if(!user){
+    container.innerHTML='<div class="myc-empty"><div class="myc-empty-ico">&#128274;</div><div class="myc-empty-txt">Please log in to see your contests.</div><button class="btn-p" onclick="openLogin()" style="margin:0 auto">Log in</button></div>';
+    return;
+  }
+  var arr=getMyContests();
+
+  /* ── profile summary card ── */
+  var joined=new Date(user.joinedAt);
+  var joinStr=joined.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  var ini=getInitials(user.name);
+  var profileHTML='<div style="background:var(--bg2);border:.5px solid rgba(93,202,165,.2);border-radius:var(--r);padding:24px 28px;display:flex;align-items:center;gap:20px;margin-bottom:32px;flex-wrap:wrap">'+
+    '<div style="width:56px;height:56px;border-radius:50%;background:var(--gl);color:var(--gd);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0">'+ini+'</div>'+
+    '<div style="flex:1;min-width:180px">'+
+      '<div style="font-size:18px;font-weight:800;color:var(--t1);letter-spacing:-.02em;margin-bottom:3px">'+user.name+'</div>'+
+      '<div style="font-size:13px;color:var(--t3)">'+user.email+(user.college?' &nbsp;·&nbsp; '+user.college:'')+'</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:24px;flex-wrap:wrap">'+
+      '<div style="text-align:center"><div style="font-size:24px;font-weight:800;color:var(--gl)">'+arr.length+'</div><div style="font-size:10px;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-top:2px">Registered</div></div>'+
+      '<div style="text-align:center"><div style="font-size:24px;font-weight:800;color:var(--t1)">'+arr.filter(function(c){return c.status==='live';}).length+'</div><div style="font-size:10px;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-top:2px">Live now</div></div>'+
+      '<div style="text-align:center"><div style="font-size:13px;font-weight:600;color:var(--t2)">'+joinStr+'</div><div style="font-size:10px;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-top:2px">Joined</div></div>'+
+    '</div>'+
+  '</div>';
+
+  if(arr.length===0){
+    container.innerHTML=profileHTML+'<div class="myc-empty"><div class="myc-empty-ico">&#9632;</div><div class="myc-empty-txt">You haven\'t registered for any contests yet.</div><button class="btn-p" onclick="showPage(\'contests\')" style="margin:0 auto">Browse contests</button></div>';
+    return;
+  }
+
+  container.innerHTML=profileHTML+
+    '<div style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">'+
+      '<span style="font-size:10px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase">'+arr.length+' contest'+(arr.length>1?'s':'')+' registered</span>'+
+      '<button onclick="showPage(\'contests\')" style="padding:7px 16px;background:rgba(93,202,165,.1);color:var(--gl);border:.5px solid rgba(93,202,165,.25);border-radius:999px;font-size:12px;font-weight:600;cursor:pointer">+ Browse more</button>'+
+    '</div>'+
+  arr.map(function(c){
+    var sLabel=c.status==='live'?'Live':c.status==='open'?'Open':'Ongoing';
+    var dt=new Date(c.registeredAt);
+    var dateStr=dt.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+    return '<div class="myc-card" id="myc-'+c.id+'">'+
+      '<div class="myc-left">'+
+        '<div class="myc-dot '+c.status+'"></div>'+
+        '<div>'+
+          '<div class="myc-title">'+c.name+'</div>'+
+          '<div class="myc-meta">'+c.meta+' &nbsp;&middot;&nbsp; Registered '+dateStr+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="myc-right">'+
+        '<span class="myc-badge '+c.status+'">'+sLabel+'</span>'+
+        '<button class="btn-wd" onclick="withdrawContest(\''+c.id+'\')">Withdraw</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+/* ═══ WITHDRAW ════════════════════════════════════ */
+function withdrawContest(id){
+  /* fade out the card then remove */
+  var card=document.getElementById('myc-'+id);
+  if(card){
+    card.style.transition='opacity .3s,transform .3s';
+    card.style.opacity='0';card.style.transform='translateX(20px)';
+    setTimeout(function(){
+      removeContest(id);
+      /* restore register button on contests page */
+      var btn=document.getElementById(id);
+      if(btn){btn.textContent='Register';btn.className='btn-reg';}
+      renderMyContests();
+      toast('Withdrawn from contest.');
+    },320);
+  }else{
+    removeContest(id);
+    var btn=document.getElementById(id);
+    if(btn){btn.textContent='Register';btn.className='btn-reg';}
+    renderMyContests();
+    toast('Withdrawn from contest.');
+  }
+}
+
+/* ═══ RESTORE BUTTON STATES ON LOAD ══════════════ */
+function restoreButtons(){
+  getMyContests().forEach(function(c){
+    var btn=document.getElementById(c.id);
+    if(btn){btn.textContent='Registered \u2713';btn.className='btn-reg done';}
+  });
+}
+
+/* ═══ VISITOR BAR ═════════════════════════════════ */
+var todayC=341,totalC=12940,secSince=0;
 function applyStatus(){
   var pill=document.getElementById('vPill'),dot=document.getElementById('vDot'),txt=document.getElementById('vTxt');
-  if(OWNER_STATUS==='online'){pill.className='vb-pill online';dot.className='vb-dot on';txt.textContent='Online';}
-  else{pill.className='vb-pill offline';dot.className='vb-dot off';txt.textContent='Offline';}
+  if(OWNER_STATUS==='online'){pill.className='vbpill online';dot.className='vbdot on';txt.textContent='Online';}
+  else{pill.className='vbpill offline';dot.className='vbdot off';txt.textContent='Offline';}
 }
 function tickClock(){
-  var n=new Date(),h=String(n.getHours()).padStart(2,'0'),m=String(n.getMinutes()).padStart(2,'0'),s=String(n.getSeconds()).padStart(2,'0');
-  document.getElementById('vClock').textContent=h+':'+m+':'+s;
+  var n=new Date();
+  document.getElementById('vClock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0');
   try{var tz=Intl.DateTimeFormat().resolvedOptions().timeZone.split('/');document.getElementById('vTz').textContent=tz[tz.length-1].replace(/_/g,' ').slice(0,9);}catch(e){}
 }
-function tickPing(){
-  secSince++;
-  var el=document.getElementById('vPing');
-  if(secSince<10)el.textContent='just now';
-  else if(secSince<60)el.textContent=secSince+'s ago';
-  else el.textContent=Math.floor(secSince/60)+'m ago';
-}
-function tickVisitors(){
-  var b=Math.floor(Math.random()*3)+1;
-  todayCount+=b;totalCount+=b;secSince=0;
-  document.getElementById('vToday').textContent=todayCount.toLocaleString();
-  document.getElementById('vTotal').textContent=totalCount.toLocaleString();
-}
+function tickPing(){secSince++;var el=document.getElementById('vPing');if(secSince<10)el.textContent='just now';else if(secSince<60)el.textContent=secSince+'s ago';else el.textContent=Math.floor(secSince/60)+'m ago';}
+function tickV(){var b=Math.floor(Math.random()*3)+1;todayC+=b;totalC+=b;secSince=0;document.getElementById('vToday').textContent=todayC.toLocaleString();document.getElementById('vTotal').textContent=totalC.toLocaleString();}
 function startBar(){
-  var bar=document.getElementById('vBar');
-  bar.style.display='flex';
+  document.getElementById('vBar').style.display='flex';
   applyStatus();
-  document.getElementById('vToday').textContent=todayCount.toLocaleString();
-  document.getElementById('vTotal').textContent=totalCount.toLocaleString();
-  tickClock();
-  setInterval(tickClock,1000);
-  setInterval(tickPing,1000);
-  setInterval(tickVisitors,5000);
+  document.getElementById('vToday').textContent=todayC.toLocaleString();
+  document.getElementById('vTotal').textContent=totalC.toLocaleString();
+  tickClock();setInterval(tickClock,1000);setInterval(tickPing,1000);setInterval(tickV,5000);
 }
 
-/* ─── STAT COUNTER ANIMATION ─────────────── */
+/* ═══ STATS COUNTER ═══════════════════════════════ */
 function animCount(id,target,dec){
-  var el=document.getElementById(id),cur=0,dur=1400,fps=60,steps=dur/(1000/fps),inc=target/steps;
-  var t=setInterval(function(){
-    cur=Math.min(cur+inc,target);
-    el.textContent=dec?cur.toFixed(1):Math.floor(cur);
-    if(cur>=target)clearInterval(t);
-  },1000/fps);
+  var el=document.getElementById(id),cur=0,inc=target/80;
+  var t=setInterval(function(){cur=Math.min(cur+inc,target);el.textContent=dec?cur.toFixed(1):Math.floor(cur);if(cur>=target)clearInterval(t);},18);
 }
-var statsObs=new IntersectionObserver(function(e){
-  if(e[0].isIntersecting){
-    animCount('sStudents',8,false);
-    animCount('sContests',80,false);
-    animCount('sProblems',2.1,true);
-    statsObs.disconnect();
-  }
-},{threshold:.3});
-statsObs.observe(document.getElementById('stats'));
+var statsDone=false;
+new IntersectionObserver(function(e){
+  if(e[0].isIntersecting&&!statsDone){statsDone=true;animCount('sS',28,false);animCount('sC',180,false);animCount('sP',2.1,true);animCount('sCo',40,false);}
+},{threshold:.3}).observe(document.getElementById('stats'));
 
-/* ─── LEADERBOARD ────────────────────────── */
+/* ═══ LEADERBOARD ═════════════════════════════════ */
 var lbData=[
   {rank:1,name:'arjun_codes',college:'IIT Bombay',score:3840,solved:142,change:0},
   {rank:2,name:'priya_dsa',college:'NIT Trichy',score:3720,solved:138,change:1},
@@ -487,63 +1098,57 @@ var lbData=[
   {rank:5,name:'rohit_devv',college:'DTU Delhi',score:3380,solved:125,change:0},
   {rank:6,name:'aman_algo',college:'IIT Delhi',score:3210,solved:119,change:3},
   {rank:7,name:'meera_x',college:'NSUT Delhi',score:3100,solved:115,change:-2},
+  {rank:8,name:'vikram_cp',college:'IIIT Hyderabad',score:2980,solved:110,change:1},
 ];
 function renderLB(){
-  var body=document.getElementById('lbBody');body.innerHTML='';
+  var body=document.getElementById('lbBody');if(!body)return;body.innerHTML='';
   lbData.forEach(function(r){
-    var rc=r.rank<=3?'rank r'+r.rank:'rank';
-    var chg=r.change===0?'<span class="chg-eq">—</span>':r.change>0?'<span class="chg-up">▲'+r.change+'</span>':'<span class="chg-dn">▼'+Math.abs(r.change)+'</span>';
+    var rc='rk'+(r.rank<=3?' r'+r.rank:'');
+    var chg=r.change===0?'<span class="ceq">\u2014</span>':r.change>0?'<span class="cu">\u25b2'+r.change+'</span>':'<span class="cd">\u25bc'+Math.abs(r.change)+'</span>';
     var tr=document.createElement('tr');
-    tr.innerHTML='<td class="'+rc+'">'+r.rank+'</td><td><span class="uname">'+r.name+'</span><span class="ucollege">'+r.college+'</span></td><td class="lb-score">'+r.score.toLocaleString()+'</td><td class="lb-solved">'+r.solved+'</td><td style="text-align:right">'+chg+'</td>';
-    tr.onclick=function(){toast('Profile: '+r.name+' · Score '+r.score)};
+    tr.innerHTML='<td class="'+rc+'">'+r.rank+'</td><td><span class="un">'+r.name+'</span><span class="uc">'+r.college+'</span></td><td class="lbs">'+r.score.toLocaleString()+'</td><td class="lbso">'+r.solved+'</td><td style="text-align:right">'+chg+'</td>';
+    tr.onclick=function(){toast('Profile: '+r.name+' \u00b7 Score '+r.score.toLocaleString());};
     body.appendChild(tr);
   });
 }
 renderLB();
 setInterval(function(){
-  lbData.forEach(function(r){
-    r.score+=Math.floor(Math.random()*10);
-    if(Math.random()>.7)r.solved++;
-    r.change=Math.floor(Math.random()*5)-2;
-  });
+  lbData.forEach(function(r){r.score+=Math.floor(Math.random()*12);if(Math.random()>.72)r.solved++;r.change=Math.floor(Math.random()*5)-2;});
   lbData.sort(function(a,b){return b.score-a.score});
   lbData.forEach(function(r,i){r.rank=i+1});
   renderLB();
 },8000);
 
-/* ─── CONTEST REGISTRATION ───────────────── */
-var regMap={};
-function regContest(btnId,ptId){
-  if(regMap[btnId]){toast('Already registered!');return;}
-  regMap[btnId]=true;
-  var btn=document.getElementById(btnId);
-  btn.textContent='Registered ✓';btn.className='btn-reg done';
-  var el=document.getElementById(ptId);
-  var cur=parseInt(el.textContent.replace(/,/g,''));
-  el.textContent=(cur+1).toLocaleString()+' registered';
-  toast('Registered successfully! Check your email.');
-}
-
-/* ─── LIVE COUNTDOWN ─────────────────────── */
+/* ═══ COUNTDOWN ═══════════════════════════════════ */
 var endMs=Date.now()+(3*86400+7200)*1000;
-function tickCountdown(){
+function tickCD(){
   var diff=endMs-Date.now();
-  if(diff<=0){document.getElementById('cd1').textContent='Ended';return;}
-  var d=Math.floor(diff/86400000);
-  var h=Math.floor((diff%86400000)/3600000);
-  var m=Math.floor((diff%3600000)/60000);
-  var s=Math.floor((diff%60000)/1000);
-  document.getElementById('cd1').textContent=d+'d '+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  var str=diff<=0?'Ended':(Math.floor(diff/86400000)+'d '+String(Math.floor((diff%86400000)/3600000)).padStart(2,'0')+':'+String(Math.floor((diff%3600000)/60000)).padStart(2,'0')+':'+String(Math.floor((diff%60000)/1000)).padStart(2,'0'));
+  ['cd1','cd1b'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=str;});
 }
-tickCountdown();setInterval(tickCountdown,1000);
+tickCD();setInterval(tickCD,1000);
 
-/* ─── NAVBAR SCROLL ──────────────────────── */
-window.addEventListener('scroll',function(){
-  document.getElementById('navbar').style.background=window.scrollY>60?'rgba(8,8,15,0.98)':'rgba(8,8,15,0.82)';
-},{passive:true});
+/* ═══ FAQ ══════════════════════════════════════════ */
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+
+/* ═══ CONTACT FORM ════════════════════════════════ */
+function submitContact(){
+  var n=document.getElementById('cfName').value.trim();
+  var e=document.getElementById('cfEmail').value.trim();
+  var s=document.getElementById('cfSubject').value.trim();
+  var m=document.getElementById('cfMsg').value.trim();
+  if(!n||!e||!s||!m){toast('Please fill in all fields.');return;}
+  toast('Message sent! We\'ll reply within 48 hours. \u2709\uFE0F');
+  document.getElementById('cfName').value='';document.getElementById('cfEmail').value='';
+  document.getElementById('cfSubject').value='';document.getElementById('cfMsg').value='';
+}
+
+/* ═══ INIT ON PAGE LOAD ═══════════════════════════ */
+(function init(){
+  var user=getUser();
+  updateNavForUser(user);
+  restoreButtons();
+})();
 </script>
 </body>
 </html>
-
-
-
